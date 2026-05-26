@@ -7,7 +7,7 @@ function MainLayout() {
   const hasDashboardHeader = location.pathname === '/dashboard';
 
   return (
-    <main className="h-screen overflow-hidden bg-[#edf4f7] text-zinc-950">
+    <main className="h-screen overflow-hidden bg-(--secondary-bg) text-(--text)">
       <div className="flex h-screen">
         <Sidebar />
         <section className="h-screen min-w-0 flex-1 overflow-y-auto">

@@ -1,6 +1,19 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import {
+  Search,
+  Calendar,
+  Bell,
+  Heart,
+  Wallet,
+  Briefcase,
+  Moon,
+  Lightbulb,
+  Check,
+  TrendingUp,
+  AlertCircle,
+} from 'lucide-react';
 import aiInsightBulb from '../assets/ai-insight-bulb.png';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
@@ -72,19 +85,19 @@ function Dashboard() {
   }, []);
 
   return (
-    <div className="flex h-screen min-w-0 flex-1 overflow-hidden bg-[#fbf9f8] text-[#1b1c1c]">
+    <div className="flex h-screen min-w-0 flex-1 overflow-hidden bg-slate-50 text-gray-900">
       <section className="flex min-w-0 flex-1 flex-col overflow-hidden">
         <DashboardHeader today={today} firstName={firstName} onSearchClick={() => navigate('/copilot')} />
 
         <main className="dashboard-scrollbar flex-1 overflow-y-auto px-6 py-6 lg:px-8">
           <section className="mb-6 animate-[fadeIn_280ms_ease-out]">
-            {/* <div className="mb-1 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.22em] text-[#5f8fa0]/70">
+            {/* <div className="mb-1 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.22em] text-purple-600/70">
               <span>Dashboard</span>
               <span>/</span>
-              <span className="text-[#416f82]">Overview</span>
+              <span className="text-purple-700">Overview</span>
             </div> */}
-            <h1 className="text-4xl font-semibold tracking-tight text-[#1b1c1c]">Morning, {firstName}.</h1>
-            <p className="mt-2 max-w-2xl text-base leading-7 text-[#596467]">
+            <h1 className="text-4xl font-bold tracking-tight text-slate-900">Morning, {firstName}.</h1>
+            <p className="mt-2 max-w-2xl text-base leading-7 text-gray-700">
               Your health, finance, and career signals are in{' '}
               <span className="font-semibold text-[#416f82]">{insights.alignmentLabel}</span> today.
               {isLoadingDashboard && <span className="ml-2 text-sm text-[#7b8581]">Refreshing profile...</span>}
@@ -108,34 +121,39 @@ function Dashboard() {
 
 function DashboardHeader({ today, firstName, onSearchClick }) {
   return (
-    <header className="flex h-20 shrink-0 items-center justify-between border-b border-[#dbe2df]/80 bg-[#fbf9f8]/80 px-6 backdrop-blur-xl lg:px-8">
+    <header className="flex h-20 shrink-0 items-center justify-between border-b-2 border-purple-300 bg-white px-6 lg:px-8 shadow-md">
       <div className="max-w-xl flex-1">
         <label className="relative block">
-          <SearchIcon className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#6d7774]" />
+          <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-purple-600" />
           <input
             type="text"
             placeholder="Ask DigitalTwin AI"
             onClick={onSearchClick}
             onFocus={onSearchClick}
             readOnly
-            className="w-full rounded-2xl border-0 bg-[#f0eded] py-2.5 pl-11 pr-4 text-sm outline-none transition placeholder:text-[#8b9490] focus:bg-white focus:ring-2 focus:ring-[#8db9c5]/30"
+            className="w-full rounded-2xl border-2 border-purple-300 bg-white/90 py-2.5 pl-11 pr-4 text-sm outline-none transition placeholder:text-purple-500 focus:bg-white focus:ring-2 focus:ring-purple-400/50 hover:border-purple-400"
           />
         </label>
       </div>
 
       <div className="ml-6 flex items-center gap-4">
-        <div className="hidden items-center gap-2 rounded-full border border-[#dbe2df] bg-white px-4 py-2 text-xs font-semibold shadow-[0_8px_24px_rgba(0,0,0,0.04)] sm:flex">
-          <CalendarIcon className="h-4 w-4 text-[#416f82]" />
+        <div className="hidden items-center gap-2 rounded-full border-2 border-cyan-300 bg-white/90 px-4 py-2 text-xs font-semibold shadow-md sm:flex hover:shadow-lg transition-all duration-300">
+          <Calendar className="h-4 w-4 text-cyan-600" />
           {today}
         </div>
-        <button className="relative grid h-10 w-10 place-items-center rounded-full text-[#596467] transition hover:bg-[#f0eded]" type="button" aria-label="Notifications">
-          <BellIcon className="h-5 w-5" />
-          <span className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-[#ba4a40]" />
+        <button
+          className="relative grid h-10 w-10 place-items-center rounded-full text-purple-600 transition hover:bg-purple-100 hover:scale-105"
+          type="button"
+          aria-label="Notifications"
+          onClick={() => navigate('/notifications')}
+        >
+          <Bell className="h-5 w-5" />
+          <span className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-red-500" />
         </button>
-        <button className="rounded-full bg-[#1b1c1c] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[#416f82]" type="button">
+        <button className="rounded-full bg-purple-600 px-5 py-2 text-sm font-semibold text-white transition hover:shadow-lg hover:scale-105 duration-300" type="button">
           Get Report
         </button>
-        <div className="grid h-10 w-10 place-items-center rounded-full bg-[#dbecef] text-sm font-bold text-[#416f82]">
+        <div className="grid h-10 w-10 place-items-center rounded-full bg-pink-500 text-sm font-bold text-white shadow-md hover:shadow-lg transition-all duration-300">
           {firstName.slice(0, 1).toUpperCase()}
         </div>
       </div>
@@ -199,7 +217,7 @@ function HealthScoreCard({ insights, onOpen }) {
           <p className={`text-[11px] font-semibold uppercase tracking-[0.16em] ${healthStyle.text}`}>{healthStyle.label} vitals</p>
         </div>
         <div className={`grid h-10 w-10 place-items-center rounded-xl ${healthStyle.icon}`}>
-          <HeartIcon className="h-5 w-5" />
+          <Heart className="h-5 w-5" />
         </div>
       </div>
 
@@ -365,11 +383,11 @@ function LifeBalance({ insights }) {
           <line className="dashboard-radar-spoke" stroke="#e4e2e1" x1="50" x2="12" y1="50" y2="37" />
           <polygon className="dashboard-radar-area" fill="rgba(141,185,197,0.32)" points={points} stroke="#5f8fa0" strokeWidth="2" />
         </svg>
-        <RadarLabel className="left-1/2 top-[-10px] -translate-x-1/2" label="Health" />
-        <RadarLabel className="right-[-28px] top-[35%]" label="Finance" />
-        <RadarLabel className="bottom-[-12px] right-0" label="Career" />
-        <RadarLabel className="bottom-[-12px] left-0" label="Recovery" />
-        <RadarLabel className="left-[-24px] top-[35%]" label="Stress" />
+        <RadarLabel className="left-1/2 -top-2.5 -translate-x-1/2" label="Health" />
+        <RadarLabel className="-right-7 top-[35%]" label="Finance" />
+        <RadarLabel className="-bottom-3 right-0" label="Career" />
+        <RadarLabel className="-bottom-3 left-0" label="Recovery" />
+        <RadarLabel className="-left-6 top-[35%]" label="Stress" />
       </div>
     </article>
   );
@@ -448,7 +466,7 @@ function RitualDay({ day }) {
   if (day.state === 'done') {
     return (
       <span className="grid h-7 w-7 place-items-center rounded-full border-2 border-[#4f8f73] text-[#4f8f73]">
-        <CheckIcon className="h-4 w-4" />
+        <Check className="h-4 w-4" />
       </span>
     );
   }
@@ -1219,9 +1237,9 @@ function escapeRegExp(value) {
 
 function iconForCategory(category = '') {
   const text = String(category).toLowerCase();
-  if (text.includes('finance') || text.includes('spending') || text.includes('saving')) return WalletIcon;
-  if (text.includes('career') || text.includes('product') || text.includes('learning')) return BriefIcon;
-  return MoonIcon;
+  if (text.includes('finance') || text.includes('spending') || text.includes('saving')) return Wallet;
+  if (text.includes('career') || text.includes('product') || text.includes('learning')) return Briefcase;
+  return Moon;
 }
 
 function buildFinanceRanges({ income, expenditure, stressLevel, savingsRate, financeScore }) {
@@ -1418,40 +1436,6 @@ function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
 }
 
-function SearchIcon({ className }) {
-  return <svg className={className} viewBox="0 0 24 24" fill="none"><path d="m21 21-4.3-4.3M10.8 18a7.2 7.2 0 1 1 0-14.4 7.2 7.2 0 0 1 0 14.4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>;
-}
 
-function CalendarIcon({ className }) {
-  return <svg className={className} viewBox="0 0 24 24" fill="none"><path d="M7 3v3m10-3v3M4 9h16M5 5h14a1 1 0 0 1 1 1v14H4V6a1 1 0 0 1 1-1Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" /></svg>;
-}
-
-function BellIcon({ className }) {
-  return <svg className={className} viewBox="0 0 24 24" fill="none"><path d="M18 9a6 6 0 1 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9ZM10 21h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>;
-}
-
-function HeartIcon({ className }) {
-  return <svg className={className} viewBox="0 0 24 24" fill="none"><path d="M12 20s-7-4.4-9-9.2C1.4 7 3.8 4 7.1 4c1.9 0 3.4 1 4.2 2.3C12.1 5 13.6 4 15.5 4 18.8 4 21.2 7 19.6 10.8 17.7 15.6 12 20 12 20Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" /></svg>;
-}
-
-function WalletIcon({ className }) {
-  return <svg className={className} viewBox="0 0 24 24" fill="none"><path d="M4 7.5A2.5 2.5 0 0 1 6.5 5H19v14H6.5A2.5 2.5 0 0 1 4 16.5v-9Z" stroke="currentColor" strokeWidth="2" /><path d="M16 12h4v4h-4a2 2 0 0 1 0-4Z" stroke="currentColor" strokeWidth="2" /></svg>;
-}
-
-function MoonIcon({ className }) {
-  return <svg className={className} viewBox="0 0 24 24" fill="none"><path d="M20 15.5A8.5 8.5 0 0 1 8.5 4 8.5 8.5 0 1 0 20 15.5Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" /></svg>;
-}
-
-function BriefIcon({ className }) {
-  return <svg className={className} viewBox="0 0 24 24" fill="none"><path d="M9 7V5h6v2m-9 3h12m-14 0h18v10H4V10Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" /></svg>;
-}
-
-function CheckIcon({ className }) {
-  return <svg className={className} viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg>;
-}
-
-function LightbulbIcon({ className }) {
-  return <svg className={className} viewBox="0 0 24 24" fill="none"><path d="M9 18h6m-5 3h4m3-10a5 5 0 1 0-8.7 3.4c.7.8 1.2 1.6 1.2 2.6h5c0-1 .5-1.8 1.2-2.6A5 5 0 0 0 17 11Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>;
-}
 
 export default Dashboard;

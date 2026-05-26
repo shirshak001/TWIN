@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import { BarChart3, Zap } from 'lucide-react';
+
 export default function DashboardTest() {
   const [activeTab, setActiveTab] = useState('overview');
 
@@ -61,7 +63,7 @@ export default function DashboardTest() {
                 Data Processed
               </h3>
               <div className="w-10 h-10 bg-primary-600 rounded-lg flex items-center justify-center">
-                <span className="text-white text-lg">📊</span>
+                <BarChart3 className="text-white" size={20} />
               </div>
             </div>
             <p className="text-3xl font-bold text-slate-900 dark:text-white mb-2">
@@ -174,7 +176,10 @@ export default function DashboardTest() {
 
         {/* Status Card */}
         <div className="bg-primary-600 rounded-lg shadow-lg p-8 text-white">
-          <h3 className="text-2xl font-bold mb-2">🎉 Tailwind CSS is Ready!</h3>
+          <div className="flex items-center gap-2">
+            <Zap className="text-yellow-500" size={24} />
+            <h3 className="text-2xl font-bold mb-2">Tailwind CSS is Ready!</h3>
+          </div>
           <p className="text-primary-100 mb-4">
             Your DigitalTwin SaaS dashboard is now powered by Tailwind CSS with full utility support, dark mode, and modern SaaS styling.
           </p>

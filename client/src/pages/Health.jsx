@@ -1,502 +1,402 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { Heart, Moon, Droplets, Activity, Zap, Brain, X } from 'lucide-react';
 
-// Data Arrays
-const healthMetrics = [
-  { label: 'Pulse', value: 72, status: 'Ideal bpm', tone: 'primary', icon: HeartPulseIcon, isGood: true },
-  { label: 'Sleep Quality', value: 92, status: 'Peak', tone: 'warm', icon: MoonIcon, isGood: true },
-  { label: 'Hydration', value: 75, status: 'Needs attention', tone: 'sky', icon: DropIcon, isGood: false },
-  { label: 'Stress Level', value: 58, status: 'Moderate', tone: 'neutral', icon: BalanceIcon, isGood: false },
-  { label: 'Steps', value: 82, status: '8,420 steps', tone: 'primary', icon: RunIcon, isGood: true },
+// Data: Male Health Metrics
+const maleMetrics = [
+  { id: 'pulse', label: 'Pulse', value: 72, unit: 'bpm', status: 'Optimal', color: 'red', data: [70, 72, 71, 72, 70, 73, 72] },
+  { id: 'testosterone', label: 'Testosterone', value: 750, unit: 'ng/dL', status: 'Healthy', color: 'blue', data: [740, 745, 750, 755, 750, 745, 750] },
+  { id: 'strength', label: 'Muscle Strength', value: 88, unit: '%', status: 'Strong', color: 'purple', data: [82, 84, 86, 87, 88, 88, 88] },
+  { id: 'sleep', label: 'Sleep Quality', value: 82, unit: '%', status: 'Good', color: 'indigo', data: [75, 78, 80, 82, 82, 82, 82] },
+  { id: 'cardio', label: 'Cardiovascular', value: 85, unit: '%', status: 'Excellent', color: 'rose', data: [78, 80, 82, 83, 85, 85, 85] },
+  { id: 'hydration', label: 'Hydration', value: 75, unit: '%', status: 'Moderate', color: 'cyan', data: [70, 72, 73, 74, 75, 75, 75] },
 ];
 
-const tobaccoBars = [80, 65, 90, 50, 40, 30, 25];
+// Data: Female (Period) Metrics
+const femalePeriodicMetrics = [
+  { id: 'cycle', label: 'Cycle Day', value: 14, unit: 'of 28', status: 'Ovulation', color: 'pink', data: [1, 7, 14, 21, 28] },
+  { id: 'energy', label: 'Energy Level', value: 78, unit: '%', status: 'Elevated', color: 'orange', data: [65, 70, 75, 78, 75] },
+  { id: 'cramps', label: 'Discomfort', value: 3, unit: '/10', status: 'Minimal', color: 'rose', data: [2, 3, 5, 2, 1] },
+  { id: 'bloating', label: 'Bloating', value: 4, unit: '/10', status: 'Moderate', color: 'amber', data: [1, 2, 4, 3, 1] },
+  { id: 'mood', label: 'Mood Score', value: 85, unit: '%', status: 'Stable', color: 'purple', data: [80, 82, 85, 83, 88] },
+  { id: 'hydration', label: 'Hydration', value: 82, unit: '%', status: 'Optimal', color: 'cyan', data: [75, 78, 80, 82, 82] },
+];
 
-// Smooth lifting and border-darkening transition class applied upon user hover
-const interactiveCardClass = 'rounded-xl border border-[#d8e5ea] bg-white/80 shadow-[0_10px_30px_rgba(0,0,0,0.02)] backdrop-blur transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[#1b1c1c] hover:shadow-[0_18px_40px_rgba(0,0,0,0.08)] cursor-pointer active:scale-[0.98]';
+// Data: Female (Pregnancy) Metrics
+const femalePregnancyMetrics = [
+  { id: 'weeks', label: 'Weeks', value: 18, unit: 'weeks', status: 'Trimester 2', color: 'blue', data: [8, 12, 14, 16, 18] },
+  { id: 'weight', label: 'Weight Gain', value: 4.2, unit: 'kg', status: 'Optimal', color: 'emerald', data: [0, 1, 2.5, 3.2, 4.2] },
+  { id: 'fetal', label: 'Fetal Heart', value: 145, unit: 'bpm', status: 'Healthy', color: 'rose', data: [120, 135, 142, 144, 145] },
+  { id: 'bp', label: 'Blood Pressure', value: 118, unit: '/ 75', status: 'Normal', color: 'indigo', data: [115, 116, 118, 118, 118] },
+  { id: 'glucose', label: 'Glucose', value: 95, unit: 'mg/dL', status: 'Stable', color: 'orange', data: [92, 94, 95, 95, 95] },
+  { id: 'hydration', label: 'Hydration', value: 85, unit: '%', status: 'Excellent', color: 'cyan', data: [78, 80, 82, 85, 85] },
+];
 
-function Health() {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
+// Simple Bar Chart Component
+const SimpleChart = ({ data, color = 'purple' }) => {
+  const max = Math.max(...data);
+  const colorMap = {
+    red: '#ef4444', blue: '#3b82f6', purple: '#a855f7', indigo: '#6366f1',
+    rose: '#f43f5e', cyan: '#06b6d4', pink: '#ec4899', orange: '#f97316',
+    amber: '#f59e0b', emerald: '#10b981'
+  };
+  
   return (
-    <div className="min-h-full bg-[#fbf9f8] px-6 py-8 text-[#1b1c1c] sm:px-8 lg:px-12">
-      
-      {/* Header Section */}
-      <section className="mb-8">
-        <h1 className="text-4xl font-semibold tracking-tight text-[#1b1c1c]">Health Intelligence Hub</h1>
-        <p className="mt-2 max-w-2xl text-base leading-relaxed text-[#596467]">
-          Synchronized biometric tracking, environmental context logs, and preventative recovery paths.
-        </p>
-      </section>
-
-      {/* 1. Core Health Metrics Cards */}
-      <section className="mb-8 grid grid-cols-2 gap-5 md:grid-cols-3 xl:grid-cols-5">
-        {healthMetrics.map((metric) => (
-          <MetricCard key={metric.label} metric={metric} />
-        ))}
-      </section>
-
-      {/* 2. Environmental Intelligence Panel */}
-      <section className="mb-8 grid grid-cols-1 gap-6 xl:grid-cols-12">
-        <article className="rounded-xl border border-[#badce3] bg-[#e6f4f8] p-6 shadow-[0_10px_30px_rgba(0,0,0,0.02)] transition-all duration-300 hover:-translate-y-1 hover:border-[#1b1c1c] hover:shadow-[0_18px_40px_rgba(0,0,0,0.08)] cursor-pointer active:scale-[0.98] xl:col-span-12">
-          <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-[#badce3] pb-4">
-            <div className="flex items-center gap-3">
-              <div className="grid h-14 w-14 place-items-center rounded-xl bg-[#416f82] text-white shrink-0">
-                <CloudIcon className="h-7 w-7" />
-              </div>
-              <div>
-                <h3 className="text-xs font-bold uppercase tracking-[0.16em] text-[#2c5363]">Today's Environmental Forecast</h3>
-                <p className="text-3xl font-bold text-[#1b1c1c] mt-0.5">41°C <span className="text-sm font-medium text-[#596467]">(Dry Heat Wave • UV Index: Extreme)</span></p>
-              </div>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              <span className="rounded-full bg-white/80 border border-[#badce3] px-3 py-1.5 text-xs font-semibold text-[#416f82]">📍 Current Location</span>
-              <span className="rounded-full bg-[#fff1ed] border border-[#efcfc5] px-3 py-1.5 text-xs font-semibold text-[#ea580c]">⚠️ Peak Heat Window: 12 PM - 4 PM</span>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            <div className="rounded-xl bg-white/70 border border-[#badce3] p-6 hover:bg-white transition-colors duration-300">
-              <div className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#ea580c]">
-                <DropIcon className="h-4 w-4" />
-                Adaptive Water Intake
-              </div>
-              <p className="text-2xl font-bold text-[#1b1c1c] mb-1.5">3.8 Liters</p>
-              <p className="text-sm leading-relaxed text-[#596467]">
-                Intense heat drives higher baseline transpiration. Scale up targets by <strong className="text-[#ea580c]">+800ml</strong>. Include electrolytes before 2:00 PM.
-              </p>
-            </div>
-
-            <div className="rounded-xl bg-white/70 border border-[#badce3] p-6 hover:bg-white transition-colors duration-300">
-              <div className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#8b4e3f]">
-                <FemaleIcon className="h-4 w-4" />
-                Apparel Optimization
-              </div>
-              <p className="text-lg font-bold text-[#380d04] mb-1.5">Loose Linen & Cottons</p>
-              <p className="text-sm leading-relaxed text-[#596467]">
-                Opt for loose-fitting, highly breathable open-weave fabrics. Avoid dark synthetic blends that trap heat radiation.
-              </p>
-            </div>
-
-            <div className="rounded-xl bg-white/70 border border-[#badce3] p-6 hover:bg-white transition-colors duration-300">
-              <div className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#16a34a]">
-                <RunIcon className="h-4 w-4" />
-                Activity Realignment
-              </div>
-              <p className="text-lg font-bold text-[#144728] mb-1.5">Indoor-only Cardio Threshold</p>
-              <p className="text-sm leading-relaxed text-[#596467]">
-                Postpone high-intensity outdoor activities until past 7:00 PM. High thermal loads fast-track systemic physical exhaustion.
-              </p>
-            </div>
-          </div>
-        </article>
-      </section>
-
-      {/* 3. Reproductive Health Modules */}
-      <section className="mb-8 grid grid-cols-1 gap-6 xl:grid-cols-12">
-        <article className="rounded-xl border border-[#efcfc5] bg-[#fff1ed] p-6 shadow-[0_10px_30px_rgba(0,0,0,0.02)] transition-all duration-300 hover:-translate-y-1 hover:border-[#1b1c1c] hover:shadow-[0_18px_40px_rgba(0,0,0,0.08)] cursor-pointer active:scale-[0.98] xl:col-span-6 flex flex-col justify-between">
-          <div>
-            <div className="mb-4 flex items-center justify-between">
-              <h3 className="text-xs font-bold uppercase tracking-[0.16em] text-[#8b4e3f]">Period & Cycle Wellness</h3>
-              <span className="rounded-md bg-white/60 border border-[#efcfc5] px-2.5 py-1 text-xs font-semibold text-[#8b4e3f]">Day 14 • Ovulation Phase</span>
-            </div>
-            
-            <div className="rounded-xl bg-white/50 border border-[#efcfc5] p-5 text-sm text-[#6f3729] mb-5">
-              <p className="font-bold text-base text-[#ea580c] mb-1.5">⚠️ Dietary Alert & Pain Management</p>
-              <p className="leading-relaxed text-sm">
-                Avoid heavy legumes like <strong className="text-[#ea580c]">channa (chickpeas)</strong>, rajma, or fried foods today. High-gas foods induce abdominal bloating which puts extra pressure on the pelvic wall, severely aggravating menstrual cramps.
-              </p>
-            </div>
-          </div>
-
-          <div className="space-y-3.5">
-            <div className="flex items-start gap-3.5 text-sm">
-              <LowImpactIcon className="mt-0.5 h-5 w-5 shrink-0 text-[#8b4e3f]" />
-              <p className="text-[#6f3729] leading-relaxed"><span className="font-semibold text-[#1b1c1c]">Exercise Matrix:</span> Swap high-impact lifting for restorative mobility stretches to control cramping responses.</p>
-            </div>
-            <div className="flex items-start gap-3.5 text-sm">
-              <MealIcon className="mt-0.5 h-5 w-5 shrink-0 text-[#8b4e3f]" />
-              <p className="text-[#6f3729] leading-relaxed"><span className="font-semibold text-[#16a34a]">Optimization:</span> Shift toward iron-rich elements and warm ginger infusions to relax uterine muscles.</p>
-            </div>
-          </div>
-        </article>
-
-        <article className={`${interactiveCardClass} p-6 xl:col-span-6 flex flex-col justify-between`}>
-          <div>
-            <div className="mb-4 flex items-center justify-between">
-              <h3 className="text-xs font-bold uppercase tracking-[0.16em] text-[#416f82]">Pregnancy Companion</h3>
-              <span className="rounded-md bg-[#eef6f8] px-2.5 py-1 text-xs font-semibold text-[#416f82]">Trimester 2</span>
-            </div>
-            <div className="mb-5 grid grid-cols-2 gap-4">
-              <div className="rounded-xl bg-[#f7fbfc] p-5 border border-[#d8e5ea]">
-                <p className="text-xs font-bold uppercase tracking-wider text-[#596467]">Current Progress</p>
-                <p className="mt-1.5 text-2xl font-bold text-[#416f82]">18 Weeks, 4 Days</p>
-              </div>
-              <div className="rounded-xl bg-[#f7fbfc] p-5 border border-[#d8e5ea]">
-                <p className="text-xs font-bold uppercase tracking-wider text-[#596467]">Weight Trajectory</p>
-                <p className="mt-1.5 text-2xl font-bold text-[#16a34a]">+4.2 kg <span className="text-xs text-[#596467] font-normal">(Optimal)</span></p>
-              </div>
-            </div>
-          </div>
-          <div className="rounded-xl bg-[#f7fbfc] border border-[#d8e5ea] p-4.5 flex items-start gap-3.5 text-sm">
-            <SparkIcon className="mt-0.5 h-5 w-5 shrink-0 text-[#416f82]" />
-            <p className="text-[#596467] leading-relaxed"><span className="font-semibold text-[#1b1c1c]">Fetal Signal:</span> Auditory nerves are functioning. Avoid environments exceeding 85dB to keep heart rates uniform.</p>
-          </div>
-        </article>
-      </section>
-
-      {/* 4. Tobacco Dash & Enhanced Daily Optimization Matrix */}
-      <section className="mb-8 grid grid-cols-1 gap-6 xl:grid-cols-12">
-        {/* Smoke / Tobacco Reduction Card */}
-        <article className={`${interactiveCardClass} p-6 xl:col-span-4 flex flex-col justify-between`}>
-          <div>
-            <div className="mb-3 flex items-center justify-between">
-              <h3 className="text-xs font-bold uppercase tracking-[0.16em] text-[#416f82]">Tobacco Log</h3>
-              <span className="rounded-md bg-[#ddf5e5] px-2 py-1 text-[10px] font-bold text-[#16a34a]">-15% WK</span>
-            </div>
-            <div className="mb-3 flex items-baseline gap-2">
-              <span className="text-4xl font-semibold">3</span>
-              <span className="text-sm text-[#596467]">units / avg daily</span>
-            </div>
-            <div className="mb-5 flex h-24 items-end gap-2 px-1">
-              {tobaccoBars.map((height, index) => (
-                <div key={index} className="flex-1 rounded-t bg-[#416f82]/10 overflow-hidden">
-                  <div
-                    className="w-full rounded-t bg-[#416f82] transition-all duration-[1200ms] ease-out origin-bottom"
-                    style={{ 
-                      height: isMounted ? `${height}%` : '0%', 
-                      opacity: 0.4 + index * 0.08 
-                    }}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-          <Observation text="Late-night stress periods trigger dependencies. Swap for warm chamomile liquid blends past 10:00 PM." />
-        </article>
-
-        {/* Daily Optimization Matrix */}
-        <article className={`${interactiveCardClass} p-6 xl:col-span-8 flex flex-col justify-between`}>
-          <div className="mb-5 border-b border-[#d8e5ea] pb-4">
-            <h2 className="text-2xl font-bold tracking-tight text-[#1b1c1c]">Daily Optimization Matrix</h2>
-            <p className="text-sm text-[#596467] mt-1">Continuous comparative view of circadian habits and target corrections.</p>
-          </div>
-          
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 grow">
-            <div className="rounded-xl bg-[#fbf9f8] p-5 border border-[#e4e2e1] flex flex-col justify-center">
-              <div className="mb-4 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#ea580c]">
-                <div className="p-1.5 rounded-md bg-[#ffdad2]">
-                  <MoonIcon className="h-4 w-4 text-[#ea580c]" />
-                </div>
-                Yesterday's Critical Gaps (Warning)
-              </div>
-              <div className="space-y-3.5 text-sm text-[#ea580c] leading-relaxed">
-                <div className="flex items-start gap-2.5">
-                  <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#ea580c]" />
-                  <p>Late-night screen outputs prolonged brain-wave stimulation past 11:15 PM.</p>
-                </div>
-                <div className="flex items-start gap-2.5">
-                  <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#ea580c]" />
-                  <p>Deep REM recovery dropped by <span className="font-bold">18%</span> via fragmented tracking.</p>
-                </div>
-                <div className="flex items-start gap-2.5">
-                  <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#ea580c]" />
-                  <p>Fluid consistency flatlined early at 2.2L, prompting minor internal water retention.</p>
-                </div>
-              </div>
-            </div>
-            
-            <div className="rounded-xl bg-[#eef6f8] p-5 border border-[#c8dbe2] flex flex-col justify-center">
-              <div className="mb-4 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#16a34a]">
-                <div className="p-1.5 rounded-md bg-[#e6f1f4]">
-                  <AutoIcon className="h-4 w-4 text-[#16a34a]" />
-                </div>
-                Today's Action Plan (Optimal)
-              </div>
-              <div className="space-y-3.5 text-sm text-[#16a34a] leading-relaxed">
-                <div className="flex items-start gap-2.5">
-                  <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#16a34a]" />
-                  <p>Absolute physical screen drop-offs strictly by <span className="font-bold">10:30 PM</span>.</p>
-                </div>
-                <div className="flex items-start gap-2.5">
-                  <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#16a34a]" />
-                  <p>Force hydration benchmarks forward: Log +800ml before midday system readings.</p>
-                </div>
-                <div className="flex items-start gap-2.5">
-                  <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#16a34a]" />
-                  <p>Incorporate soft, structured spine-extension resets over dense mental routines.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </article>
-      </section>
-
-      {/* 5. Cross-Intelligence Feed & Future Recovery Trajectory */}
-      <section className="grid grid-cols-1 gap-6 xl:grid-cols-12">
-        {/* Cross Intelligence Insights */}
-        <article className={`${interactiveCardClass} p-6 xl:col-span-5`}>
-          <div className="mb-5 flex items-center justify-between border-b border-[#d8e5ea] pb-4">
-            <div>
-              <h2 className="text-2xl font-bold tracking-tight text-[#1b1c1c]">Cross-Intelligence Insights</h2>
-              <p className="text-sm text-[#596467] mt-1">Biometric correlations calculated across tracking segments.</p>
-            </div>
-            <SparkIcon className="h-6 w-6 text-[#416f82] shrink-0" />
-          </div>
-          <div className="space-y-4">
-            <FeedItem 
-              color="#ea580c" 
-              title="Smoke vs Stress Nexus" 
-              text="Elevated nicotine intake reliably spikes subsequent evening resting heart rates by 6 bpm, imitating active stress patterns." 
-              isGood={false}
-            />
-            <FeedItem 
-              color="#16a34a" 
-              title="Hydration & Recovery Link" 
-              text="Achieving your baseline 3.0L metrics matches a clear 12% boost in overall morning metabolic efficiency scores." 
-              isGood={true}
-            />
-            <FeedItem 
-              color="#16a34a" 
-              title="Step Count Multiplier" 
-              text="Accumulating over 8,000 steps prior to 6:00 PM correlates with an easier entry into deep slow-wave sleep cycles." 
-              isGood={true}
-            />
-          </div>
-        </article>
-
-        {/* Future Recovery Trajectory Card */}
-        <article className={`${interactiveCardClass} p-6 xl:col-span-7 flex flex-col justify-between`}>
-          <div>
-            <h3 className="mb-4 text-xl font-bold tracking-tight">Future Recovery Trajectory</h3>
-            <div className="relative mb-5 h-52 overflow-hidden rounded-xl border border-[#d8e5ea] bg-[#f7fbfc]">
-              <svg className="absolute inset-0 h-full w-full" preserveAspectRatio="none" viewBox="0 0 640 220">
-                <line x1="0" y1="55" x2="640" y2="55" stroke="#e4e2e1" strokeWidth="0.5" strokeDasharray="4" />
-                <line x1="0" y1="110" x2="640" y2="110" stroke="#e4e2e1" strokeWidth="0.5" strokeDasharray="4" />
-                <line x1="0" y1="165" x2="640" y2="165" stroke="#e4e2e1" strokeWidth="0.5" strokeDasharray="4" />
-
-                <path 
-                  d="M0 120 Q110 92 210 132 T430 170 T640 188" 
-                  fill="none" 
-                  opacity="0.5" 
-                  stroke="#ea580c" 
-                  strokeDasharray="1000"
-                  strokeDashoffset={isMounted ? '0' : '1000'}
-                  className="transition-all duration-[1500ms] ease-in-out"
-                  strokeWidth="3" 
-                />
-                <path 
-                  d="M0 126 Q120 82 225 66 T430 48 T640 32" 
-                  fill="none" 
-                  stroke="#16a34a" 
-                  strokeLinecap="round" 
-                  strokeDasharray="1000"
-                  strokeDashoffset={isMounted ? '0' : '1000'}
-                  className="transition-all duration-[1800ms] ease-in-out delay-100"
-                  strokeWidth="4" 
-                />
-              </svg>
-              <div className="absolute right-4 top-4 space-y-2 text-xs font-semibold bg-white/90 backdrop-blur border border-[#d8e5ea] p-2.5 rounded-lg shadow-sm">
-                <Legend color="#16a34a" label="Recommended path" />
-                <Legend color="#ea580c" label="Current path" />
-              </div>
-            </div>
-          </div>
-          <div className="grid gap-4 md:grid-cols-2">
-            <PathCard tone="primary" title="Recommended Recovery Path" text="Balanced recovery metrics, stable system metrics, and protected metabolic reserves." />
-            <PathCard tone="warm" title="Current Path Trajectory" text="Elevated bio-strain margins indicate potential physical burnout by late next week." />
-          </div>
-        </article>
-      </section>
-
+    <div className="flex items-end gap-1 h-16 w-full">
+      {data.map((value, idx) => (
+        <div key={idx} className="flex-1 flex flex-col items-center">
+          <div
+            className="w-full rounded-t transition-all duration-300 hover:opacity-80"
+            style={{
+              height: `${(value / max) * 100}%`,
+              backgroundColor: colorMap[color] || colorMap.purple,
+              minHeight: '4px'
+            }}
+          />
+          <span className="text-xs text-(--muted) mt-1">{idx + 1}</span>
+        </div>
+      ))}
     </div>
   );
-}
+};
 
-{/* Subcomponents */}
-function MetricCard({ metric }) {
-  const Icon = metric.icon;
-  const tone = getTone(metric.tone);
-  const textColorClass = metric.isGood ? 'text-[#16a34a]' : 'text-[#ea580c]';
+function HealthSummaryCard({ icon: Icon, title, value, detail, accent }) {
+  const accentMap = {
+    blue: 'text-(--secondary) bg-[rgba(110,168,254,0.1)] border-[rgba(110,168,254,0.2)]',
+    red: 'text-(--error) bg-[rgba(239,68,68,0.1)] border-[rgba(239,68,68,0.2)]',
+    cyan: 'text-(--secondary) bg-[rgba(56,189,248,0.12)] border-[rgba(56,189,248,0.22)]',
+    emerald: 'text-(--primary) bg-[rgba(124,255,178,0.12)] border-[rgba(124,255,178,0.2)]',
+    purple: 'text-(--accent) bg-[rgba(192,132,252,0.12)] border-[rgba(192,132,252,0.2)]',
+  };
 
   return (
-    <article className={`${interactiveCardClass} p-5 text-center`}>
-      <div className="mx-auto mb-4 grid h-16 w-16 place-items-center rounded-full bg-[#f0eded]">
-        <ProgressRing value={metric.value} color={metric.isGood ? '#16a34a' : '#ea580c'} />
-      </div>
-      <div className="mx-auto mb-2.5 grid h-9 w-9 place-items-center rounded-xl" style={{ backgroundColor: tone.bg, color: metric.isGood ? '#16a34a' : '#ea580c' }}>
+    <div className={`rounded-2xl border p-4 shadow-sm transition-all duration-300 hover:-translate-y-1 ${accentMap[accent] || accentMap.purple} bg-(--surface-soft)`}>
+      <div className="mb-2 flex items-center justify-between">
+        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-(--muted)">{title}</p>
         <Icon className="h-5 w-5" />
       </div>
-      <h3 className="text-xs font-bold uppercase tracking-[0.12em] text-[#596467] truncate">{metric.label}</h3>
-      <p className={`mt-1 text-sm font-bold truncate ${textColorClass}`}>{metric.status}</p>
-    </article>
-  );
-}
-
-// 60FPS High-Precision RequestAnimationFrame Counter Loop
-function ProgressRing({ value, color }) {
-  const radius = 28;
-  const circumference = 2 * Math.PI * radius;
-  const [currentVal, setCurrentVal] = useState(0);
-
-  useEffect(() => {
-    let startTimestamp = null;
-    const targetValue = parseInt(value, 10);
-    const duration = 1200; // Complete loading sweep in 1.2s
-
-    const step = (timestamp) => {
-      if (!startTimestamp) startTimestamp = timestamp;
-      const progress = timestamp - startTimestamp;
-      const progressPercentage = Math.min(progress / duration, 1);
-      
-      setCurrentVal(Math.floor(progressPercentage * targetValue));
-
-      if (progress < duration) {
-        window.requestAnimationFrame(step);
-      }
-    };
-
-    window.requestAnimationFrame(step);
-  }, [value]);
-
-  const offset = circumference - (currentVal / 100) * circumference;
-
-  return (
-    <div className="relative h-14 w-14">
-      <svg className="h-full w-full -rotate-90" viewBox="0 0 72 72">
-        <circle cx="36" cy="36" fill="none" r={radius} stroke="#e4e2e1" strokeWidth="4.5" />
-        <circle 
-          cx="36" 
-          cy="36" 
-          fill="none" 
-          r={radius} 
-          stroke={color} 
-          strokeDasharray={circumference} 
-          strokeDashoffset={offset} 
-          strokeLinecap="round" 
-          strokeWidth="4.5"
-        />
-      </svg>
-      <div className="absolute inset-0 grid place-items-center text-sm font-bold tracking-tight">{currentVal}%</div>
+      <p className="text-3xl font-bold text-(--text)">{value}</p>
+      <p className="mt-2 text-sm text-(--muted)">{detail}</p>
     </div>
   );
 }
 
-function Observation({ text }) {
-  return (
-    <div className="rounded-xl bg-[#f0eded] p-4 border border-transparent">
-      <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-[#596467]">
-        <LightIcon className="h-4 w-4" />
-        Context Observation
+function Health() {
+  const [gender, setGender] = useState('female'); // 'male' or 'female'
+  const [femaleMode, setFemaleMode] = useState('period'); // 'period' or 'pregnancy'
+  const [selectedMetric, setSelectedMetric] = useState(null);
+  const [activeTab, setActiveTab] = useState('metrics'); // 'metrics', 'trends', 'ai'
+
+  // Select appropriate metrics based on gender and mode
+  const currentMetrics = 
+    gender === 'male' ? maleMetrics : 
+    femaleMode === 'period' ? femalePeriodicMetrics : 
+    femalePregnancyMetrics;
+
+  // AI Suggestions
+  const aiSuggestions = [
+    { icon: Brain, title: 'Hydration Alert', text: 'Increase water intake by 600ml daily. Current level suboptimal for recovery.', color: 'cyan' },
+    { icon: Activity, title: 'Exercise Recommendation', text: gender === 'male' ? 'Strength training 3x weekly optimal for testosterone maintenance.' : 'Low-impact yoga improves flexibility without stress.', color: 'emerald' },
+    { icon: Moon, title: 'Sleep Optimization', text: 'Maintain 10 PM bedtime. Your REM cycles peak at 2-4 AM window.', color: 'indigo' },
+    { icon: Zap, title: 'Energy Management', text: gender === 'male' ? 'Peak workout window: 2-4 PM (natural cortisol peak)' : femaleMode === 'period' ? 'Conserve energy today (peak menstrual phase)' : 'Ideal time for prenatal exercises: 10-11 AM', color: 'amber' },
+  ];
+
+  // Metric Card Component
+  const MetricCard = ({ metric }) => (
+    <button
+      onClick={() => setSelectedMetric(metric)}
+      className="rounded-xl border-2 p-4 shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer text-left h-full flex flex-col justify-between group border-(--border) bg-(--surface-soft)"
+    >
+      <div>
+        <p className="text-xs font-bold uppercase tracking-wider text-(--muted) mb-2">{metric.label}</p>
+        <div className="flex items-baseline gap-1">
+          <span className="text-2xl font-bold text-(--text)">{metric.value}</span>
+          <span className="text-xs text-(--muted)">{metric.unit}</span>
+        </div>
+        <p className="text-xs text-(--muted) mt-1">{metric.status}</p>
       </div>
-      <p className="text-sm leading-relaxed text-[#596467]">{text}</p>
-    </div>
+      <div className="mt-3 group-hover:opacity-100 transition-opacity">
+        <SimpleChart data={metric.data} color={metric.color} />
+      </div>
+    </button>
   );
-}
 
-function Legend({ color, label }) {
-  return (
-    <div className="flex items-center gap-2 text-sm text-[#596467]">
-      <span className="h-2 w-2 rounded-full" style={{ backgroundColor: color }} />
-      <span>{label}</span>
-    </div>
-  );
-}
-
-function PathCard({ tone, title, text }) {
-  const styles = tone === 'primary'
-    ? 'border-[#c8dbe2] bg-[#eef6f8] text-[#16a34a]'
-    : 'border-[#efcfc5] bg-[#fff1ed] text-[#ea580c]';
-
-  return (
-    <div className={`rounded-xl border p-5 transition-colors duration-300 ${styles}`}>
-      <h4 className="mb-1.5 text-xs font-bold uppercase tracking-[0.14em]">{title}</h4>
-      <p className="text-sm leading-relaxed text-[#596467]">{text}</p>
-    </div>
-  );
-}
-
-function FeedItem({ color, title, text, isGood }) {
-  const inlineAlertColor = isGood ? 'text-[#16a34a]' : 'text-[#ea580c]';
-  return (
-    <div className="flex gap-4 items-start rounded-xl bg-[#fbf9f8] border border-[#e4e2e1] p-4.5 hover:bg-white transition-all duration-300">
-      <span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: color }} />
-      <div className="text-sm leading-relaxed text-[#596467]">
-        <span className={`font-bold block mb-1 text-base ${inlineAlertColor}`}>{title}</span> 
-        {text}
+  // AI Card Component
+  const AICard = ({ suggestion }) => (
+    <div className="rounded-xl border border-(--border) bg-(--surface-soft) p-4 shadow-md hover:shadow-lg transition-all duration-300 flex gap-3 hover:scale-105">
+      <div className="shrink-0">
+        <suggestion.icon className="h-5 w-5" style={{ color: getColorValue(suggestion.color, 600) }} />
+      </div>
+      <div>
+        <p className="text-sm font-bold text-(--text)">{suggestion.title}</p>
+        <p className="text-xs text-(--muted) mt-0.5">{suggestion.text}</p>
       </div>
     </div>
   );
+
+  return (
+    <div className="min-h-screen bg-(--secondary-bg) px-4 py-6 sm:px-8 overflow-hidden text-(--text)">
+      {/* Header with Gender & Mode Selector */}
+      <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-3xl sm:text-4xl font-bold text-(--text)">Health Intelligence</h1>
+          <p className="text-sm text-(--muted) mt-1">Real-time biometric analysis & AI recommendations</p>
+        </div>
+
+        {/* Gender Selector */}
+        <div className="flex items-center gap-2 bg-[rgba(255,255,255,0.06)] backdrop-blur border border-(--border) rounded-full p-1">
+          <button
+            onClick={() => setGender('male')}
+            className={`px-4 py-2 rounded-full font-semibold text-sm transition-all duration-300 ${
+              gender === 'male'
+                ? 'bg-(--secondary) text-[#0b1020] shadow-lg shadow-[rgba(124,255,178,0.18)]'
+                : 'text-(--muted) hover:text-(--text)'
+            }`}
+          >
+            Male
+          </button>
+          <button
+            onClick={() => setGender('female')}
+            className={`px-4 py-2 rounded-full font-semibold text-sm transition-all duration-300 ${
+              gender === 'female'
+                ? 'bg-(--accent) text-[#0b1020] shadow-lg shadow-[rgba(192,132,252,0.18)]'
+                : 'text-(--muted) hover:text-(--text)'
+            }`}
+          >
+            Female
+          </button>
+        </div>
+      </div>
+
+      {/* Female Mode Selector - Only shown when Female selected */}
+      {gender === 'female' && (
+        <div className="mb-6 flex gap-2">
+          <button
+            onClick={() => setFemaleMode('period')}
+            className={`px-4 py-2 rounded-full font-semibold text-sm transition-all duration-300 ${
+              femaleMode === 'period'
+                ? 'bg-[rgba(236,72,153,0.18)] text-(--text) shadow-lg shadow-[rgba(236,72,153,0.18)]'
+                : 'bg-[rgba(255,255,255,0.06)] text-(--muted) border border-(--border) hover:bg-[rgba(255,255,255,0.1)]'
+            }`}
+          >
+            Period Mode
+          </button>
+          <button
+            onClick={() => setFemaleMode('pregnancy')}
+            className={`px-4 py-2 rounded-full font-semibold text-sm transition-all duration-300 ${
+              femaleMode === 'pregnancy'
+                ? 'bg-[rgba(56,189,248,0.18)] text-(--text) shadow-lg shadow-[rgba(56,189,248,0.18)]'
+                : 'bg-[rgba(255,255,255,0.06)] text-(--muted) border border-(--border) hover:bg-[rgba(255,255,255,0.1)]'
+            }`}
+          >
+            Pregnancy Mode
+          </button>
+        </div>
+      )}
+
+      {/* Health Summary Quick View */}
+      <div className="mb-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+        <HealthSummaryCard icon={Moon} title="Sleep Duration" value="7.1 hr" detail="Recovery good" accent="blue" />
+        <HealthSummaryCard icon={Heart} title="Pulse" value="72 bpm" detail="Normal range" accent="red" />
+        <HealthSummaryCard icon={Droplets} title="Hydration" value="2.8 L" detail="Target met" accent="cyan" />
+        <HealthSummaryCard icon={Activity} title="Steps" value="9,400" detail="Active day" accent="emerald" />
+        <HealthSummaryCard icon={Zap} title="Stress" value="24%" detail="Low tension" accent="purple" />
+      </div>
+
+      {/* Tab Navigation */}
+      <div className="mb-6 flex gap-2 flex-wrap">
+        {['metrics', 'trends', 'ai'].map(tab => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 ${
+              activeTab === tab
+                ? 'bg-(--accent) text-[#0b1020] shadow-lg shadow-[rgba(192,132,252,0.18)]'
+                : 'bg-[rgba(255,255,255,0.06)] text-(--muted) border border-(--border) hover:bg-[rgba(255,255,255,0.12)]'
+            }`}
+          >
+            {tab === 'metrics' ? 'Metrics' : tab === 'trends' ? 'Trends' : 'AI Tips'}
+          </button>
+        ))}
+      </div>
+
+      {/* Main Content Area - Fits on one page max height */}
+      <div className="max-h-[calc(100vh-320px)] overflow-y-auto">
+        {/* Metrics Grid */}
+        {activeTab === 'metrics' && (
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pb-4">
+            {currentMetrics.map(metric => (
+              <MetricCard key={metric.id} metric={metric} />
+            ))}
+          </div>
+        )}
+
+        {/* Trends View */}
+        {activeTab === 'trends' && (
+          <div className="space-y-4 pb-4">
+            <div className="rounded-xl border border-(--border) bg-(--surface) p-4 shadow-lg">
+              <h3 className="text-lg font-bold text-(--text) mb-4">7-Day Trend Analysis</h3>
+              <div className="space-y-4">
+                {currentMetrics.slice(0, 3).map(metric => (
+                  <div key={metric.id} className="flex items-center justify-between">
+                    <span className="text-sm font-semibold text-(--text) min-w-24">{metric.label}</span>
+                    <div className="flex-1 mx-4 h-12">
+                      <SimpleChart data={metric.data} color={metric.color} />
+                    </div>
+                    <span className="text-sm font-bold text-(--text) min-w-12">{metric.value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* AI Tips View */}
+        {activeTab === 'ai' && (
+          <div className="space-y-3 pb-4">
+            {aiSuggestions.map((suggestion, idx) => (
+              <AICard key={idx} suggestion={suggestion} />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Quick Stats Footer */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
+        <div className="rounded-lg bg-(--surface-soft) border border-(--border) p-3 text-center shadow-md">
+          <p className="text-xs text-(--muted)">Overall Health</p>
+          <p className="text-2xl font-bold text-(--primary)">82%</p>
+        </div>
+        <div className="rounded-lg bg-(--surface-soft) border border-(--border) p-3 text-center shadow-md">
+          <p className="text-xs text-(--muted)">Risk Level</p>
+          <p className="text-2xl font-bold text-(--secondary)">Low</p>
+        </div>
+        <div className="rounded-lg bg-(--surface-soft) border border-(--border) p-3 text-center shadow-md">
+          <p className="text-xs text-(--muted)">Recommendations</p>
+          <p className="text-2xl font-bold text-(--accent)">4</p>
+        </div>
+        <div className="rounded-lg bg-(--surface-soft) border border-(--border) p-3 text-center shadow-md">
+          <p className="text-xs text-(--muted)">Action Items</p>
+          <p className="text-2xl font-bold text-(--warning)">2</p>
+        </div>
+      </div>
+
+      {/* Smoking Reduction & Recovery Trajectory */}
+      <div className="mt-6 grid gap-4 xl:grid-cols-2">
+        <article className="rounded-xl border border-(--border) bg-(--surface) p-6 shadow-md">
+          <div className="mb-4 flex items-center justify-between gap-4">
+            <div>
+              <h2 className="text-lg font-semibold text-(--text)">Smoking Reduction Plan</h2>
+              <p className="text-sm text-(--muted)">Tracking frequency, recovery, and motivational streaks.</p>
+            </div>
+            <span className="rounded-full bg-[rgba(245,158,11,0.12)] px-3 py-1 text-xs font-semibold text-(--warning)">Reduce by 15%</span>
+          </div>
+          <div className="space-y-3">
+            <div className="rounded-xl bg-(--surface-soft) p-4 border border-(--border)">
+              <p className="text-sm font-semibold text-(--text)">Today</p>
+              <p className="text-3xl font-bold text-(--warning)">2 cigarettes</p>
+            </div>
+            <div className="rounded-xl bg-(--surface-soft) p-4 border border-(--border)">
+              <p className="text-sm font-semibold text-(--text)">Weekly Reduction</p>
+              <p className="text-lg font-bold text-(--text)">-18% compared to last week</p>
+            </div>
+            <div className="rounded-xl bg-(--surface-soft) p-4 border border-(--border)">
+              <p className="text-sm font-semibold text-(--text)">Recovery streak</p>
+              <p className="text-lg font-bold text-(--primary)">5 days</p>
+            </div>
+          </div>
+        </article>
+
+        <article className="rounded-xl border border-(--border) bg-(--surface) p-6 shadow-md">
+          <div className="mb-4">
+            <h2 className="text-lg font-semibold text-(--text)">Future Recovery Trajectory</h2>
+            <p className="text-sm text-(--muted)">Projected recovery based on current health behaviors.</p>
+          </div>
+          <div className="relative h-64 overflow-hidden rounded-xl border border-(--border) bg-[rgba(255,255,255,0.04)] p-4">
+            <svg className="absolute inset-0 h-full w-full" viewBox="0 0 780 240" preserveAspectRatio="none">
+              <line x1="0" y1="200" x2="780" y2="200" stroke="rgba(255,255,255,0.12)" strokeWidth="1" />
+              <path d="M0 180 C180 150 320 140 450 130 C560 122 660 102 780 90" fill="none" stroke="rgba(56,189,248,0.8)" strokeWidth="4" />
+              <path d="M0 180 C180 165 320 158 450 148 C560 136 660 120 780 110" fill="none" stroke="rgba(16,185,129,0.8)" strokeWidth="4" strokeDasharray="8 8" />
+            </svg>
+            <div className="absolute inset-x-0 bottom-4 flex items-center justify-between px-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-(--muted)">
+              <span>Today</span>
+              <span>1 mo</span>
+              <span>3 mo</span>
+              <span>6 mo</span>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      {/* Detailed View Modal */}
+      {selectedMetric && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur flex items-center justify-center p-4 z-50">
+          <div className="bg-(--secondary-bg) rounded-2xl shadow-2xl border border-(--border) max-w-md w-full max-h-96 overflow-y-auto">
+            <div className="sticky top-0 flex items-center justify-between p-6 border-b border-(--border) bg-(--surface)">
+              <h2 className="text-xl font-bold text-(--text)">{selectedMetric.label} Details</h2>
+              <button
+                onClick={() => setSelectedMetric(null)}
+                className="text-(--muted) hover:text-(--text) transition-colors"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-6">
+              {/* Current Value */}
+              <div>
+                <p className="text-sm text-(--muted) mb-2">Current Value</p>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-4xl font-bold text-(--text)">{selectedMetric.value}</span>
+                  <span className="text-lg text-(--muted)">{selectedMetric.unit}</span>
+                </div>
+                <p className="text-sm mt-2 px-3 py-1 bg-[rgba(124,255,178,0.14)] text-(--primary) rounded-full inline-block">✓ {selectedMetric.status}</p>
+              </div>
+
+              {/* 7-Day Trend */}
+              <div>
+                <p className="text-sm font-semibold text-(--text) mb-3">7-Day Trend</p>
+                <div className="h-20">
+                  <SimpleChart data={selectedMetric.data} color={selectedMetric.color} />
+                </div>
+              </div>
+
+              {/* Analysis */}
+              <div>
+                <p className="text-sm font-semibold text-(--text) mb-2">Analysis</p>
+                <p className="text-sm text-(--muted) leading-relaxed">
+                  Your {selectedMetric.label.toLowerCase()} is performing well. {selectedMetric.status === 'Optimal' || selectedMetric.status === 'Excellent' ? 'Continue current habits.' : 'Minor adjustments recommended.'}
+                </p>
+              </div>
+
+              <button
+                onClick={() => setSelectedMetric(null)}
+                className="w-full bg-(--accent) hover:bg-[rgba(192,132,252,0.9)] text-[#0b1020] font-semibold py-2 rounded-lg transition-colors duration-300"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
 
-function getTone(tone) {
-  const tones = {
-    primary: { color: '#416f82', bg: '#e6f1f4' },
-    warm: { color: '#8b4e3f', bg: '#ffdad2' },
-    neutral: { color: '#596467', bg: '#f0eded' },
-    sky: { color: '#2f83b7', bg: '#e0f2fe' },
+// Helper function to get Tailwind color values
+function getColorValue(colorName, shade) {
+  const colors = {
+    red: { 50: '#fef2f2', 100: '#fee2e2', 300: '#f87171', 600: '#dc2626' },
+    blue: { 50: '#eff6ff', 100: '#dbeafe', 300: '#93c5fd', 600: '#2563eb' },
+    purple: { 50: '#faf5ff', 100: '#f3e8ff', 300: '#d8b4fe', 600: '#9333ea' },
+    indigo: { 50: '#f0f4ff', 100: '#e0e7ff', 300: '#a5b4fc', 600: '#4f46e5' },
+    rose: { 50: '#fff1f5', 100: '#ffe4e6', 300: '#f472b6', 600: '#e11d48' },
+    cyan: { 50: '#ecf7ff', 100: '#cffafe', 300: '#06b6d4', 600: '#0891b2' },
+    pink: { 50: '#fdf2f8', 100: '#fce7f3', 300: '#f472b6', 600: '#db2777' },
+    orange: { 50: '#fff7ed', 100: '#ffedd5', 300: '#fed7aa', 600: '#ea580c' },
+    amber: { 50: '#fffbeb', 100: '#fef3c7', 300: '#fcd34d', 600: '#d97706' },
+    emerald: { 50: '#f0fdf4', 100: '#dcfce7', 300: '#6ee7b7', 600: '#059669' }
   };
-  return tones[tone] || tones.primary;
-}
-
-// Icon Infrastructure
-function IconBase({ className, children }) {
-  return (
-    <svg aria-hidden="true" className={className} viewBox="0 0 24 24" fill="none">
-      {children}
-    </svg>
-  );
-}
-
-function HeartPulseIcon({ className }) {
-  return <IconBase className={className}><path d="M20.8 8.6c0 5-8.8 10.4-8.8 10.4S3.2 13.6 3.2 8.6A4.4 4.4 0 0 1 11 5.8l1 1.1 1-1.1a4.4 4.4 0 0 1 7.8 2.8Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" /><path d="M7 12h2l1.2-2.5 2.2 5 1.5-2.5H17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></IconBase>;
-}
-
-function MoonIcon({ className }) {
-  return <IconBase className={className}><path d="M20 15.5A8.5 8.5 0 0 1 8.5 4a7 7 0 1 0 11.5 11.5Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" /></IconBase>;
-}
-
-function BalanceIcon({ className }) {
-  return <IconBase className={className}><path d="M12 4v16M6 7h12M7 7l-4 7h8L7 7Zm10 0-4 7h8l-4-7Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></IconBase>;
-}
-
-function DropIcon({ className }) {
-  return <IconBase className={className}><path d="M12 3s6 6.1 6 11a6 6 0 0 1-12 0c0-4.9 6-11 6-11Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" /></IconBase>;
-}
-
-function RunIcon({ className }) {
-  return <IconBase className={className}><path d="M13 5.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM10 22l1-5-3-2-2 3M18 22l-3-5 1-5-3-2-2 3-4-1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></IconBase>;
-}
-
-function CloudIcon({ className }) {
-  return <IconBase className={className}><path d="M7 18h10a4 4 0 0 0 .4-7.98A6 6 0 0 0 6.1 8.2 5 5 0 0 0 7 18Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" /></IconBase>;
-}
-
-function AutoIcon({ className }) {
-  return <IconBase className={className}><path d="m12 3 1.7 4.6L18 9.3l-4.3 1.7L12 16l-1.7-5L6 9.3l4.3-1.7L12 3ZM5 15l.8 2.2L8 18l-2.2.8L5 21l-.8-2.2L2 18l2.2-.8L5 15Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" /></IconBase>;
-}
-
-function FemaleIcon({ className }) {
-  return <IconBase className={className}><path d="M12 13a5 5 0 1 0 0-10 5 5 0 0 0 0 10ZM12 13v8M8.5 17h7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></IconBase>;
-}
-
-function LowImpactIcon({ className }) {
-  return <IconBase className={className}><path d="M5 12h14M12 5v14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /><circle cx="12" cy="12" r="8" stroke="currentColor" strokeWidth="2" /></IconBase>;
-}
-
-function MealIcon({ className }) {
-  return <IconBase className={className}><path d="M6 3v8M9 3v8M6 7h3M17 3v18M14 7c0-2.2 1.4-4 3-4v8c-1.6 0-3-1.8-3-4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></IconBase>;
-}
-
-function LightIcon({ className }) {
-  return <IconBase className={className}><path d="M9 18h6M10 22h4M8.5 14.5a5.5 5.5 0 1 1 7 0c-.9.7-1.2 1.4-1.3 2.5H9.8c-.1-1.1-.4-1.8-1.3-2.5Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></IconBase>;
-}
-
-function SparkIcon({ className }) {
-  return <IconBase className={className}><path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" /></IconBase>;
+  return colors[colorName]?.[shade] || '#f3f4f6';
 }
 
 export default Health;

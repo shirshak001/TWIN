@@ -762,7 +762,7 @@ function Onboarding() {
       <Toaster position="top-right" />
       <BackgroundBeams className="opacity-90" />
 
-      <div className="relative z-10 mx-auto flex min-h-[calc(100vh-2.5rem)] max-w-7xl flex-col rounded-lg border border-white/20 bg-white/[0.82] shadow-xl shadow-black/25 backdrop-blur-md">
+      <div className="relative z-10 mx-auto flex min-h-[calc(100vh-2.5rem)] max-w-7xl flex-col rounded-lg border border-white/20 bg-white/82 shadow-xl shadow-black/25 backdrop-blur-md">
         <header className="border-b border-white/25 px-5 py-5 sm:px-8">
           <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex items-center gap-3">

@@ -1,27 +1,41 @@
 import React from 'react';
+import {
+  Shield,
+  Scale,
+  Activity,
+  Route,
+  Check,
+  Play,
+  Lock,
+  AlertTriangle,
+  Moon,
+  Sun,
+  Zap,
+  Lightbulb,
+} from 'lucide-react';
 
-const glassCardClass = 'rounded-lg border border-[#d8e5ea] bg-white/80 shadow-[0_10px_30px_rgba(0,0,0,0.035)] backdrop-blur transition hover:shadow-[0_18px_40px_rgba(0,0,0,0.06)]';
+const glassCardClass = 'rounded-lg border-2 border-indigo-300 bg-white/90 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105';
 
 const careerMetrics = [
-  { label: 'Career Stability', value: 88, status: 'Resilient', icon: ShieldIcon, tone: 'primary' },
-  { label: 'Productivity Balance', value: 76, status: 'Balanced', icon: BalanceIcon, tone: 'neutral' },
-  { label: 'Burnout Risk', value: 24, status: 'Low', icon: PulseIcon, tone: 'primary' },
-  { label: 'Roadmap Progress', value: 42, status: 'Phase 2', icon: RouteIcon, tone: 'warm' },
+  { label: 'Career Stability', value: 88, status: 'Resilient', icon: Shield, tone: 'primary' },
+  { label: 'Productivity Balance', value: 76, status: 'Balanced', icon: Scale, tone: 'neutral' },
+  { label: 'Burnout Risk', value: 24, status: 'Low', icon: Activity, tone: 'primary' },
+  { label: 'Roadmap Progress', value: 42, status: 'Phase 2', icon: Route, tone: 'warm' },
 ];
 
 const roadmapSteps = [
-  { label: 'Month 1', detail: 'HTML/CSS', status: 'Completed', icon: CheckIcon, state: 'done' },
-  { label: 'Month 2', detail: 'JavaScript', status: 'In Progress', icon: PlayIcon, state: 'active' },
-  { label: 'Month 3', detail: 'React & Next.js', status: 'Upcoming', icon: LockIcon, state: 'locked' },
+  { label: 'Month 1', detail: 'HTML/CSS', status: 'Completed', icon: Check, state: 'done' },
+  { label: 'Month 2', detail: 'JavaScript', status: 'In Progress', icon: Play, state: 'active' },
+  { label: 'Month 3', detail: 'React & Next.js', status: 'Upcoming', icon: Lock, state: 'locked' },
 ];
 
 function Career() {
   return (
-    <div className="min-h-full bg-[#fbf9f8] px-5 py-6 text-[#1b1c1c] sm:px-6 lg:px-8">
+    <div className="min-h-full bg-slate-50 px-5 py-6 text-gray-900 sm:px-6 lg:px-8">
       {/* 1. Dashboard Header */}
       <header className="mb-6">
-        <h1 className="text-4xl font-semibold tracking-tight text-[#1b1c1c]">Career Intelligence</h1>
-        <p className="mt-2 text-sm text-[#596467]">
+          <h1 className="text-4xl font-bold tracking-tight text-indigo-900">Career Intelligence</h1>
+        <p className="mt-2 text-sm text-gray-700">
           Monitoring structural risk vectors, milestone velocity, and cross-disciplinary trajectory.
         </p>
       </header>
@@ -52,16 +66,16 @@ function Career() {
           </article>
 
           {/* Burnout Warning */}
-          <article className="rounded-lg border border-[#efcfc5] border-l-4 border-l-[#8b4e3f] bg-white/80 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.035)]">
+          <article className="rounded-lg border-2 border-l-4 border-l-orange-600 border-orange-300 bg-orange-50 p-6 shadow-lg hover:shadow-xl transition-all duration-300">
             <div className="mb-4 flex items-start justify-between gap-4">
               <div>
-                <h2 className="text-xl font-semibold text-[#8b4e3f]">Burnout Warning</h2>
-                <p className="mt-1 text-sm text-[#596467]">Detected anomalous high intensity cycle</p>
+                <h2 className="text-xl font-semibold text-orange-700">Burnout Warning</h2>
+                <p className="mt-1 text-sm text-gray-700">Detected anomalous high intensity cycle</p>
               </div>
-              <WarningIcon className="h-6 w-6 text-[#8b4e3f] shrink-0" />
+              <AlertTriangle className="h-6 w-6 text-orange-600 shrink-0" />
             </div>
-            <div className="mb-5 rounded-lg border border-[#efcfc5] bg-[#fff1ed] p-4">
-              <p className="text-sm italic leading-6 text-[#7a4032]">
+            <div className="mb-5 rounded-lg border-2 border-orange-300 bg-orange-100/50 p-4">
+              <p className="text-sm italic leading-6 text-orange-800">
                 Late-night coding detected for 4 consecutive days. Your cognitive recovery capacity is down 14%.
               </p>
             </div>
@@ -72,12 +86,12 @@ function Career() {
         {/* Right Sub-Column: Dedicated AI Observation, Suggestion, and Cross-Domain Cards */}
         <aside className="space-y-4 xl:col-span-4 flex flex-col justify-between">
           <ObservationCard 
-            icon={MoonIcon} 
+            icon={Moon} 
             title="AI Observation" 
             detail="Sleep consistency is directly improving coding block speed and structural logic accuracy." 
           />
           <ObservationCard 
-            icon={LightIcon} 
+            icon={Lightbulb} 
             title="AI Suggestion" 
             detail="Shift focus to raw project architecture over certificates to secure market velocity." 
           />
@@ -85,7 +99,7 @@ function Career() {
           {/* Enhanced Cross-Domain Impact Analysis Card */}
           <article className="rounded-lg border border-[#d8e5ea] bg-white/90 p-5 shadow-[0_10px_30px_rgba(0,0,0,0.035)] border-l-4 border-l-[#416f82]">
             <div className="flex items-center gap-2 text-[#416f82] mb-2">
-              <SparkIcon className="h-4 w-4" />
+              <Zap className="h-4 w-4" />
               <h3 className="text-xs font-bold uppercase tracking-[0.14em]">Cross-Domain Analysis</h3>
             </div>
             <p className="text-sm font-semibold text-[#1b1c1c] mb-2">Systemic Ripple Effect Detected</p>
@@ -208,60 +222,6 @@ function ObservationCard({ icon: Icon, title, detail }) {
       </div>
     </article>
   );
-}
-
-{/* --- SVGs --- */}
-
-function IconBase({ className, style, children }) {
-  return (
-    <svg aria-hidden="true" className={className} style={style} viewBox="0 0 24 24" fill="none">
-      {children}
-    </svg>
-  );
-}
-
-function ShieldIcon({ className, style }) {
-  return <IconBase className={className} style={style}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" /><path d="m9 12 2 2 4-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></IconBase>;
-}
-
-function BalanceIcon({ className, style }) {
-  return <IconBase className={className} style={style}><path d="M12 4v16M5 7h14M7 7l-4 7h8L7 7ZM17 7l-4 7h8l-4-7Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></IconBase>;
-}
-
-function PulseIcon({ className, style }) {
-  return <IconBase className={className} style={style}><path d="M4 13h4l2-6 4 10 2-4h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></IconBase>;
-}
-
-function RouteIcon({ className, style }) {
-  return <IconBase className={className} style={style}><path d="M6 18a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM18 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" stroke="currentColor" strokeWidth="2" /><path d="M8.5 13.5 15.5 10.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></IconBase>;
-}
-
-function SparkIcon({ className }) {
-  return <IconBase className={className}><path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" /></IconBase>;
-}
-
-function CheckIcon({ className }) {
-  return <IconBase className={className}><path d="m5 12 4 4L19 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></IconBase>;
-}
-
-function PlayIcon({ className }) {
-  return <IconBase className={className}><path d="m8 5 11 7-11 7V5Z" fill="currentColor" /></IconBase>;
-}
-
-function LockIcon({ className }) {
-  return <IconBase className={className}><path d="M7 11V8a5 5 0 0 1 10 0v3M6 11h12v10H6V11Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" /></IconBase>;
-}
-
-function WarningIcon({ className }) {
-  return <IconBase className={className}><path d="M12 9v4M12 17h.01M10.3 4.4 2.7 18a2 2 0 0 0 1.7 3h15.2a2 2 0 0 0 1.7-3L13.7 4.4a2 2 0 0 0-3.4 0Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></IconBase>;
-}
-
-function MoonIcon({ className }) {
-  return <IconBase className={className}><path d="M20 15.3A8 8 0 0 1 8.7 4 8.5 8.5 0 1 0 20 15.3Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" /></IconBase>;
-}
-
-function LightIcon({ className }) {
-  return <IconBase className={className}><path d="M9 18h6M10 22h4M8 14a6 6 0 1 1 8 0c-1.2.8-1.5 1.8-1.5 3h-5c0-1.2-.3-2.2-1.5-3Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></IconBase>;
 }
 
 export default Career;

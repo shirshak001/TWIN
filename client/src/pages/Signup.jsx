@@ -35,7 +35,7 @@ function MorphingText({ words = morphingWords, duration = 2800, className = '' }
   }, [duration, words.length]);
 
   return (
-    <div className={`relative inline-block min-h-[4.75rem] perspective-[900px] ${className}`}>
+    <div className={`relative inline-block min-h-19 perspective-[900px] ${className}`}>
       <AnimatePresence mode="wait">
         <motion.div
           key={currentIndex}
@@ -49,7 +49,7 @@ function MorphingText({ words = morphingWords, duration = 2800, className = '' }
             scale: { duration: 0.55 },
             rotateX: { duration: 0.75 },
           }}
-          className="whitespace-nowrap bg-gradient-to-r from-[#f7fbfc] via-[#b9d5de] to-[#6f9bad] bg-clip-text text-5xl font-bold leading-tight text-transparent xl:text-6xl"
+          className="whitespace-nowrap bg-linear-to-r from-[#f7fbfc] via-[#b9d5de] to-[#6f9bad] bg-clip-text text-5xl font-bold leading-tight text-transparent xl:text-6xl"
           style={{ transformStyle: 'preserve-3d' }}
         >
           {words[currentIndex]}
@@ -209,7 +209,7 @@ function Signup() {
         }}
       />
       <BackgroundBeams className="opacity-90" />
-      <div className="relative z-10 mx-auto grid min-h-[calc(100vh-2.5rem)] max-w-5xl grid-cols-1 overflow-hidden rounded-[24px] border border-white/16 bg-white/[0.003] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_22px_58px_rgba(0,0,0,0.22)] ring-1 ring-white/5 backdrop-blur-[5px] lg:grid-cols-[0.78fr_1.22fr]">
+      <div className="relative z-10 mx-auto grid min-h-[calc(100vh-2.5rem)] max-w-5xl grid-cols-1 overflow-hidden rounded-3xl border border-white/16 bg-white/5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_22px_58px_rgba(0,0,0,0.22)] ring-1 ring-white/5 backdrop-blur-md lg:grid-cols-[0.78fr_1.22fr]">
         <section className="relative hidden overflow-hidden border-r border-white/10 px-6 pb-20 pt-6 text-white lg:flex lg:flex-col lg:justify-between">
           <div className="pointer-events-none absolute inset-0 bg-[#223946]/10" />
           <div className="relative z-20">
@@ -235,7 +235,7 @@ function Signup() {
               {signalStats.map((item, index) => (
                 <div
                   key={item.label}
-                  className="rounded-xl border border-white/12 bg-white/[0.08] p-2 text-left shadow-xl shadow-black/15 backdrop-blur-xl"
+                  className="rounded-xl border border-white/12 bg-white/8 p-2 text-left shadow-xl shadow-black/15 backdrop-blur-xl"
                 >
                   <p className="text-[11px] text-[#d9e8ed]">{item.label}</p>
                   <p className="mt-0.5 text-base font-semibold tabular-nums text-white">
@@ -243,7 +243,7 @@ function Signup() {
                   </p>
                   <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/10">
                     <div
-                      className="h-full rounded-full bg-white/80 transition-all duration-[2200ms] ease-out"
+                      className="h-full rounded-full bg-white/80 transition-all duration-2200 ease-out"
                       style={{
                         width: barsReady ? `${item.bar}%` : '0%',
                         transitionDelay: `${index * 140}ms`,
@@ -254,7 +254,7 @@ function Signup() {
               ))}
             </div>
 
-            <div className="rounded-xl border border-white/12 bg-white/[0.08] p-3 text-left shadow-xl shadow-black/15 backdrop-blur-xl">
+            <div className="rounded-xl border border-white/12 bg-white/8 p-3 text-left shadow-xl shadow-black/15 backdrop-blur-xl">
               <div className="flex items-center justify-between">
                 <p className="text-xs font-semibold text-white">Next best move</p>
                 <span className="h-2 w-2 rounded-full bg-[#b7f7d4] shadow-[0_0_18px_rgba(183,247,212,0.8)]" />
@@ -268,7 +268,7 @@ function Signup() {
         </section>
 
         <section className="flex items-center justify-center px-5 py-5 sm:px-7">
-          <div className="w-full max-w-[30rem] rounded-[22px] border border-[#e5e7eb] bg-[white] p-5 text-zinc-950 shadow-2xl shadow-black/25 sm:p-6">
+          <div className="w-full max-w-120 rounded-3xl border border-[#e5e7eb] bg-white p-5 text-zinc-950 shadow-2xl shadow-black/25 sm:p-6">
             <div className="w-full">
             <div className="mb-4 flex items-center justify-between lg:hidden">
               <Link to="/" className="flex items-center gap-3 lg:hidden">

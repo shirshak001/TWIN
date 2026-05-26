@@ -1,647 +1,249 @@
-DigitalTwin — AI Powered Life Intelligence Platform
-🚀 Overview
+# LifeTwin / DigitalTwin
 
-DigitalTwin is an AI-powered behavioral intelligence platform designed to optimize a user’s life holistically across:
+## Overview
 
-Health
-Career
-Finance
-Productivity
-Wellness
-Lifestyle Habits
+LifeTwin is an AI-powered life intelligence platform designed to unify health, finance, productivity, and career signals into a single adaptive dashboard. It combines:
 
-Unlike traditional apps that track only one domain, DigitalTwin creates:
+- Behavioral onboarding intelligence
+- AI-driven recommendations and predictions
+- Cross-domain analytics
+- Real-time metrics and notifications
+- Integrated backend security and user profiles
 
-a unified adaptive Digital Twin that understands how behaviors across domains affect one another.
+This repository contains three main workspaces:
 
-The platform combines:
+- `client/` — React + Vite frontend
+- `server/` — Node.js + Express backend API
+- `ai-engine/` — optional Python AI service for advanced predictions
 
-onboarding intelligence
-adaptive dashboards
-AI-generated analytics
-behavioral prediction
-real-world integrations
-cross-domain intelligence
-simulations
-recommendation systems
+## Repository Structure
 
-to create a personalized life optimization ecosystem.
+```
+Hack-TI/
+├── ai-engine/             # Optional AI prediction engine (Python)
+├── client/                # React frontend application
+├── server/                # Express backend API server
+├── README.md              # Project overview and setup
+└── .gitignore
+```
 
-🌟 Core Vision
+## Frontend (`client/`)
 
-Most modern applications analyze:
+### Stack
 
-health separately
-finance separately
-productivity separately
-coding activity separately
+- React 19
+- Vite
+- Tailwind CSS v4
+- Lucide icons
+- axios for HTTP requests
+- react-router-dom for page routing
 
-DigitalTwin connects them all together and analyzes:
+### Important pages
 
-how sleep affects productivity
-how stress impacts coding consistency
-how financial pressure affects wellness
-how exercise improves focus
-how smoking impacts recovery
-how burnout affects career growth
+- `client/src/pages/Copilot.jsx` — Twin Copilot user experience
+- `client/src/pages/Finance.jsx` — Finance intelligence dashboard
+- `client/src/pages/Health.jsx` — Health intelligence dashboard
+- `client/src/pages/Notifications.jsx` — Notifications center
+- `client/src/pages/Goals.jsx` — Compact goals page
+- `client/src/pages/Dashboard.jsx` — Main high-level dashboard
 
-The goal is to create:
+### Styling and theme
 
-a real-time AI-powered Digital Twin for holistic life optimization.
+The frontend uses a midnight-growth dark theme with CSS custom properties defined in `client/src/index.css`. Tailwind classes use canonical variable syntax like:
 
-🧠 Core Features
-🔐 Authentication & Security
-Features
-JWT Authentication
-Password Hashing using bcryptjs
-Protected Routes
-Secure Backend APIs
-User-specific Data Isolation
-Environment Variable Protection
-Secure AI-engine communication
-Protected Dashboard Access
-Security Philosophy
+- `bg-(--surface)`
+- `text-(--muted)`
+- `border-(--border)`
 
-DigitalTwin follows:
+This improves compatibility with Tailwind v4 and the Vite build.
 
-privacy-first behavioral intelligence architecture.
+## Backend (`server/`)
 
-Sensitive behavioral data:
+### Stack
 
-sleep patterns
-stress indicators
-financial wellness
-smoking habits
-recovery analytics
-lifestyle habits
+- Node.js + Express
+- MongoDB via Mongoose
+- JWT authentication
+- bcryptjs password hashing
+- Helmet security headers
+- CORS middleware
+- Firebase Admin SDK support (optional)
 
-are securely stored and protected.
+### Key backend files
 
-🧬 AI-Powered Digital Twin
+- `server/server.js` — main Express app and route configuration
+- `server/config/database.js` — MongoDB connection helper
+- `server/config/firebase.js` — Firebase Admin initialization
+- `server/middleware/auth.js` — JWT verification and token generation
+- `server/middleware/cors.js` — CORS policy configuration
+- `server/middleware/errorHandler.js` — error handling middleware
+- `server/controllers/authController.js` — auth logic and profile APIs
+- `server/routes/auth.js` — auth endpoint routing
+- `server/routes/onboarding.js` — onboarding and dashboard APIs
+- `server/routes/integrations.js` — external integration endpoints
+- `server/models/User.js` — user schema and auth helpers
+- `server/models/OnboardingProfile.js` — onboarding data schema
 
-DigitalTwin creates:
+### API Routes
 
-behavioral profiles
-adaptive life models
-dynamic intelligence systems
+#### Health check
 
-for every user.
+- `GET /api/health`
 
-The AI continuously analyzes:
+#### Authentication
 
-wellness
-finance
-productivity
-coding activity
-career growth
-lifestyle habits
-recovery patterns
+- `POST /api/auth/signup` — register new user
+- `POST /api/auth/login` — login and receive JWT
+- `GET /api/auth/profile` — protected profile fetch
+- `PUT /api/auth/profile` — protected profile update
+- `POST /api/auth/change-password` — protected password change
 
-to generate:
+#### Onboarding
 
-predictions
-insights
-recommendations
-warnings
-simulations
-📊 Adaptive Dashboard System
+- `POST /api/onboarding` — save onboarding profile and run analytics
+- `GET /api/dashboard` — retrieve user dashboard data
+- `POST /api/daily-goals/complete` — update streaks and completed goals
 
-The dashboard is:
+#### Integrations
 
-personalized
-behavior-aware
-AI-driven
-adaptive
-emotionally intelligent
+- `GET /api/integrations/github/:username`
+- `GET /api/integrations/leetcode/:username`
+- `POST /api/integrations/linkedin`
 
-Every user sees:
+### Backend behavior
 
-different analytics
-different recommendations
-different graphs
-different AI feeds
-different warnings
+The backend is implemented with clear separation between:
 
-based on:
+- request routing (`server/routes/*.js`)
+- business logic (`server/controllers/*.js`)
+- data storage (`server/models/*.js`)
+- infrastructure support (`server/config/*.js`)
+- error handling (`server/middleware/*.js`)
 
-onboarding inputs
-integrations
-behavioral thresholds
-AI predictions
-real-world activity
-🔥 Burnout Intelligence System
+The auth system uses JWT tokens and stores user profile data in MongoDB. Passwords are hashed with bcrypt and never returned in API responses.
 
-The platform predicts:
+## AI Engine (`ai-engine/`)
 
-burnout risk
-wellness instability
-productivity decline
-recovery imbalance
-mental overload
+This repository also includes an optional Python AI engine used for prediction and correlation analysis.
 
-using:
+### Stack
 
-sleep patterns
-study/work hours
-stress levels
-exercise frequency
-coding consistency
-recovery patterns
+- Flask
+- pandas
+- numpy
+- scikit-learn
+- python-dotenv
+- requests
 
-Example:
+### Notes
 
-“Late-night coding sessions are increasing burnout risk.”
+If you want to run AI prediction endpoints, start the AI engine before the main backend and set any required AI environment variables.
 
-💰 Financial Intelligence System
+## Local Setup
 
-DigitalTwin analyzes:
+### Prerequisites
 
-income vs expenditure
-savings buffer
-spending behavior
-financial stress
-financial stability trajectory
-savings consistency
+- Node.js 20+ and npm
+- MongoDB locally or MongoDB Atlas
+- Python 3.11+ if using the AI engine
 
-The platform generates:
+### Install dependencies
 
-financial health scores
-financial trajectory graphs
-adaptive financial recommendations
-spending risk analysis
-savings projections
+```bash
+cd server
+npm install
 
-Examples:
+cd ../client
+npm install
 
-“Savings rate is below healthy threshold.”
-“Financial stress is affecting recovery quality.”
-💻 Career & Productivity Intelligence
+cd ../ai-engine
+python -m pip install -r requirements.txt
+```
 
-Tracks:
+### Environment variables
 
-GitHub activity
-LeetCode consistency
-coding rhythm
-focus sessions
-productivity streaks
-learning momentum
-professional growth
+Copy the example files and update them with your values.
 
-Features:
+```bash
+cd server
+copy .env.example .env
 
-coding analytics
-productivity heatmaps
-burnout vs productivity analysis
-career momentum graphs
-deep work analysis
-🧠 Cross-Domain Intelligence
+cd ../client
+copy .env.example .env
+```
 
-This is the core innovation of DigitalTwin.
+#### Server environment variables
 
-The platform correlates:
-
-Health ↔ Productivity
-Finance ↔ Wellness
-Stress ↔ Career
-Sleep ↔ Coding
-Exercise ↔ Focus
-Recovery ↔ Learning Efficiency
+- `PORT` — backend port (default `5000`)
+- `NODE_ENV` — `development` or `production`
+- `MONGODB_URI` — MongoDB connection string
+- `JWT_SECRET` — JWT signing secret
+- `JWT_EXPIRE` — token lifetime, e.g. `7d`
+- `CORS_ORIGIN` — allowed frontend URL(s)
+- `FIREBASE_PROJECT_ID` — (optional)
+- `FIREBASE_PRIVATE_KEY` — (optional)
+- `FIREBASE_CLIENT_EMAIL` — (optional)
 
-Examples:
-
-“Low sleep consistency is reducing coding productivity.”
-“Financial stress is affecting wellness balance.”
-“Exercise consistency is improving focus stability.”
-“Smoking habit is increasing recovery friction.”
-🔮 Simulation & What-If Intelligence
+### Run the backend
 
-DigitalTwin includes:
-
-behavioral simulations
-predictive forecasting
-adaptive future projections
-
-Users can simulate:
+```bash
+cd server
+npm run dev
+```
 
-increased sleep
-reduced stress
-improved savings
-reduced smoking
-increased exercise
-reduced screen time
+You should see the server start and list available APIs.
 
-and see:
-
-predicted burnout reduction
-productivity improvement
-wellness stabilization
-financial recovery
-focus improvement
+### Run the frontend
 
-Example:
+```bash
+cd client
+npm run dev
+```
 
-“Improving sleep by 2 hours may reduce burnout risk by 18%.”
+Then open the Vite URL shown in the terminal, typically `http://localhost:5173` or `http://localhost:5174`.
 
-🤖 AI Recommendation Engine
+### Optional AI engine run
 
-The system generates:
+```bash
+cd ai-engine
+python run.py
+```
 
-adaptive recommendations
-wellness guidance
-productivity improvements
-financial suggestions
-recovery actions
+## Fixes applied in this update
 
-Recommendations dynamically change based on:
+- Resolved Tailwind custom-property syntax by converting all `bg-[var(--...)]` / `text-[var(--...)]` / `border-[var(--...)]` forms to canonical Tailwind syntax like `bg-(--...)`.
+- Fixed JSX structure errors in `client/src/pages/Copilot.jsx` and `client/src/pages/Finance.jsx` that were causing Vite build failures.
+- Verified the client application builds successfully.
 
-onboarding behavior
-AI predictions
-dashboard analytics
-thresholds
-integrations
-user routines
+## Troubleshooting
 
-Examples:
+### 500 errors while loading frontend pages
 
-Sleep 1 hour earlier tonight
-Reduce discretionary spending
-Schedule recovery breaks
-Maintain coding consistency
-Increase hydration and activity
-Reduce smoking frequency
-📈 Adaptive Threshold Intelligence
+This usually means the React page failed to compile. Rebuild the frontend after checking:
 
-Every metric is categorized using:
+- JSX tag nesting is correct
+- Tailwind custom classes use canonical `(... )` syntax
+- The development server is running with `npm run dev`
 
-🟢 Healthy
-🟠 Warning
-🔴 Critical
+### Backend startup failures
 
-Examples:
+Check the backend `.env` file and confirm MongoDB is reachable. If the server cannot connect to MongoDB, it will exit with a connection error.
 
-Sleep
-7–9 hrs → Green
-5–6 hrs → Orange
-Below 5 hrs → Red
-Savings Rate
-High → Green
-Moderate → Orange
-Low → Red
-Burnout Risk
-Low → Green
-Moderate → Orange
-High → Red
+### CORS issues
 
-The UI dynamically adapts using:
+Ensure the backend `CORS_ORIGIN` includes the frontend URL, such as `http://localhost:5173` or `http://localhost:5174`.
 
-graph colors
-adaptive cards
-severity indicators
-warning states
-colored insights
-🌐 Real-World Integrations
+## Where to modify behavior
 
-DigitalTwin integrates with:
+- Add new user fields: `server/models/User.js`
+- Extend onboarding analytics: `server/controllers/onboardingController.js`
+- Add new frontend page/layouts: `client/src/pages/*` and `client/src/components/*`
+- Add new API routes: `server/routes/*.js` and corresponding controllers
 
-GitHub
-LeetCode
-LinkedIn
-Fitbit (planned)
-Banking APIs (planned)
-Wearables (future)
-🐙 GitHub Integration
+## Recommended next steps
 
-Tracks:
-
-coding activity
-repositories
-languages
-consistency
-contribution signals
-
-Insights:
-
-“GitHub activity increasing.”
-“Coding consistency improving.”
-🧩 LeetCode Integration
-
-Tracks:
-
-solved problems
-DSA consistency
-rankings
-activity streaks
-
-Insights:
-
-“Problem-solving momentum stable.”
-“DSA activity decreasing this week.”
-💼 LinkedIn Integration
-
-Tracks:
-
-professional growth
-career momentum
-networking consistency
-skill growth
-
-Insights:
-
-“Professional growth trajectory improving.”
-🏥 Health Intelligence Page
-
-Includes:
-
-Sleep Analytics
-Stress Tracking
-Recovery Analysis
-Smoking Impact
-Exercise Tracking
-Period Tracking
-Burnout Indicators
-Wellness Balance
-
-Visualizations:
-
-sleep graphs
-recovery rings
-stress charts
-activity heatmaps
-wellness indicators
-
-Cross-domain insights:
-
-“Reduced sleep consistency is affecting productivity.”
-
-💰 Finance Intelligence Page
-
-Includes:
-
-Income vs Expense Analytics
-Savings Trajectory
-Financial Health Score
-Spending Breakdown
-Financial Stress Indicators
-Savings Buffer Analysis
-Future Stability Projection
-
-Visualizations:
-
-spending graphs
-financial trajectory charts
-savings analytics
-financial warning indicators
-
-Cross-domain insights:
-
-“Financial stress is affecting wellness stability.”
-
-💻 Career Intelligence Page
-
-Includes:
-
-GitHub Analytics
-LeetCode Tracking
-Productivity Heatmaps
-Coding Consistency
-Learning Momentum
-Career Growth Analysis
-Burnout vs Productivity Correlation
-
-Visualizations:
-
-coding graphs
-productivity curves
-heatmaps
-focus analytics
-consistency indicators
-
-Cross-domain insights:
-
-“Late-night coding patterns are increasing burnout risk.”
-
-🧠 Cross Intelligence / Simulation Page
-
-Acts as:
-
-the AI brain of DigitalTwin.
-
-Features:
-
-behavioral correlations
-predictive simulations
-adaptive future projections
-cross-domain analysis
-AI-generated observations
-
-Includes:
-
-What-if simulations
-Habit impact chains
-Behavioral forecasting
-Wellness prediction
-Life balance projections
-🎯 Goal & Streak System
-
-DigitalTwin uses:
-
-action-based streak tracking.
-
-Streaks are NOT fake.
-
-Users earn streaks by:
-
-completing goals
-maintaining routines
-following recommendations
-tracking behaviors consistently
-
-Examples:
-
-sleep streak
-coding streak
-workout streak
-focus streak
-🎨 UI/UX Philosophy
-
-DigitalTwin uses:
-
-premium SaaS aesthetics
-adaptive colors
-intelligent motion
-subtle animations
-behavior-aware interfaces
-emotionally adaptive design
-
-The platform avoids:
-
-generic admin dashboards
-excessive neon AI styling
-static analytics
-cluttered interfaces
-🧠 AI Feed System
-
-The AI Feed continuously generates:
-
-adaptive observations
-behavior insights
-warning signals
-positive reinforcement
-
-Examples:
-
-“Recovery rhythm improving.”
-“Financial stress increasing.”
-“Smoking habit is reducing recovery quality.”
-
-Negative insights dynamically appear in:
-🔴 red warning states.
-
-📂 Complete Project Structure
-digitaltwin/
-│
-├── client/
-│
-├── server/
-│
-├── ai-engine/
-│
-└── README.md
-📁 Frontend Structure
-client/
-│
-├── src/
-│   ├── components/
-│   ├── pages/
-│   ├── layouts/
-│   ├── routes/
-│   ├── hooks/
-│   ├── context/
-│   ├── services/
-│   ├── utils/
-│   └── assets/
-📁 Backend Structure
-server/
-│
-├── config/
-├── controllers/
-├── middleware/
-├── models/
-├── routes/
-├── services/
-├── utils/
-└── index.js
-📁 AI Engine Structure
-ai-engine/
-│
-├── app/
-│   ├── analytics/
-│   ├── models/
-│   ├── routes/
-│   ├── services/
-│   └── utils/
-│
-├── tests/
-├── requirements.txt
-└── run.py
-⚙️ Tech Stack
-Frontend
-React.js
-Tailwind CSS
-React Router DOM
-Axios
-Adaptive UI System
-Backend
-Node.js
-Express.js
-MongoDB
-Mongoose
-JWT
-bcryptjs
-AI Engine
-Flask
-Python
-Scikit-learn
-Pandas
-NumPy
-🧭 Complete Workflow
-Step 1 — Authentication
-
-User signs up and logs in securely.
-
-Step 2 — Onboarding
-
-User enters:
-
-sleep hours
-stress level
-exercise frequency
-smoking habits
-income/expenditure
-savings habits
-GitHub username
-LeetCode username
-LinkedIn profile
-Step 3 — Backend Processing
-
-Backend:
-
-validates data
-stores onboarding profile
-connects integrations
-calls AI engine
-Step 4 — AI Analysis
-
-AI Engine:
-
-predicts burnout
-analyzes productivity
-calculates wellness balance
-generates recommendations
-creates adaptive insights
-Step 5 — Dashboard Personalization
-
-Dashboard dynamically adapts using:
-
-onboarding behavior
-AI predictions
-thresholds
-integrations
-user activity
-🔌 Backend APIs
-Authentication APIs
-POST /api/auth/signup
-POST /api/auth/login
-Onboarding APIs
-POST /api/onboarding
-Dashboard APIs
-GET /api/dashboard
-GET /api/dashboard/insights
-GET /api/dashboard/recommendations
-Integration APIs
-GET /api/integrations/github/:username
-GET /api/integrations/leetcode/:username
-POST /api/integrations/linkedin
-🤖 AI APIs
-POST /api/predict/burnout
-POST /api/predict/productivity
-POST /api/analyze/correlation
-🔒 Security Features
-JWT route protection
-Password hashing
-User-specific access control
-Secure AI communication
-Protected APIs
-Environment variable protection
-🚀 Future Scope
-Real-time wearable integrations
-AI Copilot assistant
-Long-term behavior forecasting
-Advanced simulations
-AI life coaching
-Mental wellness prediction
-Mobile application
-Real-time behavioral monitoring
-Smart notification system
-Team/Family Digital Twins
-
+1. Seed the app with a test user
+2. Run the backend and frontend together
+3. Use the `Dashboard` page to validate API integration
+4. Inspect `server/routes` and `client/src/pages` for workflow
+5. Add unit tests in `server/tests` or `client/src/tests`
