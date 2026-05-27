@@ -85,7 +85,7 @@ function Dashboard() {
   }, []);
 
   return (
-    <div className="flex h-screen min-w-0 flex-1 overflow-hidden bg-slate-50 text-gray-900">
+    <div className="flex h-screen min-w-0 flex-1 overflow-hidden bg-(--secondary-bg) text-(--text)">
       <section className="flex min-w-0 flex-1 flex-col overflow-hidden">
         <DashboardHeader today={today} firstName={firstName} onSearchClick={() => navigate('/copilot')} />
 
@@ -96,10 +96,10 @@ function Dashboard() {
               <span>/</span>
               <span className="text-purple-700">Overview</span>
             </div> */}
-            <h1 className="text-4xl font-bold tracking-tight text-slate-900">Morning, {firstName}.</h1>
-            <p className="mt-2 max-w-2xl text-base leading-7 text-gray-700">
+            <h1 className="text-4xl font-bold tracking-tight text-(--text)">Morning, {firstName}.</h1>
+            <p className="mt-2 max-w-2xl text-base leading-7 text-(--muted)">
               Your health, finance, and career signals are in{' '}
-              <span className="font-semibold text-[#416f82]">{insights.alignmentLabel}</span> today.
+              <span className="font-semibold text-(--accent)">{insights.alignmentLabel}</span> today.
               {isLoadingDashboard && <span className="ml-2 text-sm text-[#7b8581]">Refreshing profile...</span>}
             </p>
           </section>
@@ -121,24 +121,24 @@ function Dashboard() {
 
 function DashboardHeader({ today, firstName, onSearchClick }) {
   return (
-    <header className="flex h-20 shrink-0 items-center justify-between border-b-2 border-purple-300 bg-white px-6 lg:px-8 shadow-md">
+    <header className="flex h-20 shrink-0 items-center justify-between border-b border-(--border) bg-(--surface) px-6 lg:px-8 shadow-lg">
       <div className="max-w-xl flex-1">
         <label className="relative block">
-          <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-purple-600" />
+          <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-(--accent)" />
           <input
             type="text"
             placeholder="Ask DigitalTwin AI"
             onClick={onSearchClick}
             onFocus={onSearchClick}
             readOnly
-            className="w-full rounded-2xl border-2 border-purple-300 bg-white/90 py-2.5 pl-11 pr-4 text-sm outline-none transition placeholder:text-purple-500 focus:bg-white focus:ring-2 focus:ring-purple-400/50 hover:border-purple-400"
+            className="w-full rounded-2xl border border-(--border) bg-[rgba(255,255,255,0.08)] py-2.5 pl-11 pr-4 text-sm outline-none transition placeholder:text-(--muted) focus:bg-[rgba(255,255,255,0.12)] focus:ring-2 focus:ring-[rgba(192,132,252,0.35)] hover:border-(--border)"
           />
         </label>
       </div>
 
       <div className="ml-6 flex items-center gap-4">
-        <div className="hidden items-center gap-2 rounded-full border-2 border-cyan-300 bg-white/90 px-4 py-2 text-xs font-semibold shadow-md sm:flex hover:shadow-lg transition-all duration-300">
-          <Calendar className="h-4 w-4 text-cyan-600" />
+        <div className="hidden items-center gap-2 rounded-full border border-(--border) bg-[rgba(255,255,255,0.08)] px-4 py-2 text-xs font-semibold text-(--muted) shadow-lg sm:flex hover:shadow-xl transition-all duration-300">
+          <Calendar className="h-4 w-4 text-(--secondary)" />
           {today}
         </div>
         <button
@@ -204,7 +204,7 @@ function HealthScoreCard({ insights, onOpen }) {
 
   return (
     <article
-      className={`dashboard-card-enter col-span-12 flex cursor-pointer flex-col rounded-2xl border bg-white p-6 shadow-[0_10px_30px_rgba(0,0,0,0.035)] transition hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,0,0,0.06)] focus:outline-none focus:ring-4 focus:ring-[#d7e9ef] xl:col-span-4 ${healthStyle.card}`}
+      className={`dashboard-card-enter col-span-12 flex cursor-pointer flex-col rounded-2xl border border-(--border) bg-(--surface) p-6 shadow-[0_10px_30px_rgba(0,0,0,0.14)] transition hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,0,0,0.2)] focus:outline-none focus:ring-4 focus:ring-[rgba(192,132,252,0.18)] xl:col-span-4 ${healthStyle.card}`}
       onClick={onOpen}
       onKeyDown={openFromKeyboard}
       role="button"
@@ -274,7 +274,7 @@ function FinanceTrajectory({ insights, onOpen }) {
 
   return (
     <article
-      className={`dashboard-card-enter col-span-12 cursor-pointer rounded-2xl border bg-white p-6 shadow-[0_10px_30px_rgba(0,0,0,0.035)] transition hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,0,0,0.06)] focus:outline-none focus:ring-4 focus:ring-[#d7e9ef] xl:col-span-8 ${financeStyle.card}`}
+      className={`dashboard-card-enter col-span-12 cursor-pointer rounded-2xl border border-(--border) bg-(--surface) p-6 shadow-[0_10px_30px_rgba(0,0,0,0.14)] transition hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,0,0,0.2)] focus:outline-none focus:ring-4 focus:ring-[rgba(192,132,252,0.18)] xl:col-span-8 ${financeStyle.card}`}
       onClick={onOpen}
       onKeyDown={openFromKeyboard}
       role="button"
@@ -307,7 +307,7 @@ function FinanceTrajectory({ insights, onOpen }) {
         </div>
       </div>
 
-      <div key={selectedRange} className="dashboard-finance-chart relative mb-6 h-56 overflow-hidden rounded-2xl border border-[#e4e2e1] bg-[#fbf9f8] px-5 pb-8 pt-5">
+      <div key={selectedRange} className="dashboard-finance-chart relative mb-6 h-56 overflow-hidden rounded-2xl border border-(--border) bg-[rgba(255,255,255,0.04)] px-5 pb-8 pt-5">
         <div className="absolute inset-x-5 top-5 bottom-8 grid grid-rows-4">
           {[0, 1, 2, 3].map((line) => (
             <div key={line} className="border-t border-[#e4e2e1]/80" />
@@ -355,7 +355,7 @@ function FinanceTrajectory({ insights, onOpen }) {
         </div>
       </div>
 
-      <div className="flex items-center justify-between border-t border-[#e4e2e1] pt-5">
+      <div className="flex items-center justify-between border-t border-(--border) pt-5">
         <div className="flex gap-8">
           <AnimatedMetricBlock label="Savings Rate" value={insights.savingsRate} suffix="%" state={getVisualState(insights.savingsState.colorState)} />
           <AnimatedMetricBlock label="Monthly Buffer" value={insights.monthlyBufferValue} formatter={formatMoney} fallback="Add data" state={getVisualState(insights.bufferState.colorState)} />
@@ -369,7 +369,7 @@ function LifeBalance({ insights }) {
   const points = `${50},${100 - insights.healthScore * 0.82} ${50 + insights.financeScore * 0.38},${50 - insights.financeScore * 0.13} ${50 + insights.productivityScore * 0.23},${50 + insights.productivityScore * 0.31} ${50 - insights.recoveryScore * 0.23},${50 + insights.recoveryScore * 0.31} ${50 - insights.burnoutRisk * 0.28},${50 - insights.burnoutRisk * 0.1}`;
 
   return (
-    <article className="dashboard-card-enter col-span-12 flex flex-col items-center rounded-2xl border border-[#dbe2df] bg-white p-6 shadow-[0_10px_30px_rgba(0,0,0,0.035)] transition hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,0,0,0.06)] md:col-span-6">
+    <article className="dashboard-card-enter col-span-12 flex flex-col items-center rounded-2xl border border-(--border) bg-(--surface) p-6 shadow-[0_10px_30px_rgba(0,0,0,0.14)] transition hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,0,0,0.2)] md:col-span-6">
       <h3 className="mb-8 self-start text-lg font-semibold">Life Balance</h3>
       <div className="relative my-3 h-56 w-56">
         <svg className="h-full w-full" viewBox="0 0 100 100">
@@ -403,7 +403,7 @@ function DailyRituals({ insights }) {
   }, []);
 
   return (
-    <article className="dashboard-card-enter col-span-12 rounded-2xl border border-[#dbe2df] bg-white p-5 shadow-[0_10px_30px_rgba(0,0,0,0.035)] transition hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,0,0,0.06)] md:col-span-6">
+    <article className="dashboard-card-enter col-span-12 rounded-2xl border border-(--border) bg-(--surface) p-5 shadow-[0_10px_30px_rgba(0,0,0,0.14)] transition hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,0,0,0.2)] md:col-span-6">
       <div className="mb-3 flex items-start justify-between gap-4">
         <div>
           <p className="text-sm font-semibold text-[#1b1c1c]">Day {ritualCalendar.today}</p>
@@ -423,7 +423,7 @@ function DailyRituals({ insights }) {
 
       <div className="grid grid-cols-7 gap-y-2">
         {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, index) => (
-          <div key={`${day}-${index}`} className="text-center text-xs font-semibold text-[#7b8581]">{day}</div>
+          <div key={`${day}-${index}`} className="text-center text-xs font-semibold text-(--muted)">{day}</div>
         ))}
 
         {ritualCalendar.days.map((day) => (
@@ -457,7 +457,7 @@ function RitualDay({ day }) {
 
   if (day.state === 'today') {
     return (
-      <span className="grid h-7 w-7 place-items-center rounded-full border border-[#8db9c5] bg-white text-sm font-bold text-[#416f82]">
+      <span className="grid h-7 w-7 place-items-center rounded-full border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.08)] text-sm font-bold text-(--secondary)">
         {day.value}
       </span>
     );
@@ -485,38 +485,54 @@ function RitualDay({ day }) {
 
 function AdaptiveRecommendations({ insights }) {
   return (
-    <section className="relative col-span-12 overflow-hidden rounded-2xl border border-[#8db9c5]/20 bg-[#eaf4f6]/70 p-8 shadow-[0_10px_30px_rgba(0,0,0,0.03)]">
+    <section className="relative col-span-12 overflow-hidden rounded-[2rem] border border-(--border) bg-[rgba(15,23,42,0.92)] p-8 shadow-[0_20px_60px_rgba(0,0,0,0.24)]">
       <div className="relative z-10">
-        <div className="mb-4 flex w-fit items-center gap-2 rounded-full border border-[#8db9c5]/30 bg-white/55 px-3 py-1">
-          <span className="h-2 w-2 animate-pulse rounded-full bg-[#416f82]" />
-          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#416f82]">Deep Sync Active</span>
+        <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div className="space-y-3">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#4fd1c5]">Deep Sync Active</p>
+            <div className="space-y-2">
+              <h2 className="text-3xl font-semibold text-(--text)">Adaptive Recommendations</h2>
+              <p className="max-w-2xl text-sm leading-6 text-(--muted)">High-impact guidance across health, career, and finance signals, surfaced for your current dashboard state.</p>
+            </div>
+          </div>
+          <div className="inline-flex items-center rounded-full border border-[rgba(255,255,255,0.12)] bg-[rgba(255,255,255,0.04)] px-4 py-2 text-sm font-semibold uppercase tracking-[0.18em] text-(--text)">LIVE</div>
         </div>
-        <h2 className="mb-6 text-2xl font-semibold">Adaptive Recommendations</h2>
+
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {insights.recommendations.slice(0, 3).map((item) => {
             const state = getVisualState(item.colorState);
             return (
-              <article key={item.title} className={`dashboard-recommendation-card relative overflow-hidden rounded-2xl border bg-white/70 backdrop-blur ${state.card}`}>
-                <span className="dashboard-recommendation-glow absolute inset-0 opacity-0" style={{ backgroundColor: state.stroke }} />
-                <div className="relative z-10 border-b border-[#dbe2df]/70 px-5 py-4">
-                  <h4 className={`text-sm font-bold ${state.text}`}>{item.title}</h4>
-                </div>
-                <div className="relative z-10 px-5 py-4">
-                  <p className="text-xs leading-5 text-[#596467]">{item.detail}</p>
+              <article key={item.title} className="relative overflow-hidden rounded-[1.75rem] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.05)] p-6 text-(--text) shadow-[0_18px_52px_rgba(0,0,0,0.17)] transition duration-300 hover:-translate-y-1.5 hover:border-[rgba(79,206,196,0.28)] hover:bg-[rgba(79,206,196,0.08)]">
+                <div className="absolute inset-y-0 left-0 w-1 rounded-r-full" style={{ backgroundColor: state.stroke }} />
+                <div className="relative z-10 ml-4">
+                  <div className="mb-4 flex items-start justify-between gap-3">
+                    <div>
+                      <p className={`text-sm font-semibold uppercase tracking-[0.18em] ${state.text}`}>{item.title}</p>
+                      <p className="mt-4 text-sm leading-6 text-(--muted)">{item.detail}</p>
+                    </div>
+                    <div className={`mt-1 h-12 w-12 rounded-3xl ${state.icon} flex items-center justify-center text-white/90 shadow-[0_10px_25px_rgba(0,0,0,0.12)]`}>
+                      <span className="text-xs font-semibold uppercase tracking-[0.2em]">{state.label}</span>
+                    </div>
+                  </div>
+                  <div className="mt-6 flex items-center justify-between gap-3 text-[11px] uppercase tracking-[0.18em] text-(--muted)">
+                    <span className="rounded-full border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.05)] px-3 py-1">Recommended</span>
+                    <span className="text-right font-semibold text-(--text)">Actionable</span>
+                  </div>
                 </div>
               </article>
             );
           })}
         </div>
       </div>
-      <div className="pointer-events-none absolute -bottom-16 -right-12 h-52 w-52 rounded-full bg-[#8db9c5]/20 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-14 -right-14 h-60 w-60 rounded-full bg-gradient-to-br from-[#4fd1c5]/30 to-[#4299e1]/0 blur-3xl" />
+      <div className="pointer-events-none absolute -top-10 left-10 h-24 w-24 rounded-full bg-gradient-to-br from-[#d6bcfa]/20 to-transparent blur-3xl" />
     </section>
   );
 }
 
 function AiFeed({ insights }) {
   return (
-    <aside className="hidden h-screen w-80 shrink-0 flex-col overflow-hidden border-l border-[#dbe2df]/80 bg-[#fbf9f8]/85 backdrop-blur-xl xl:flex">
+    <aside className="hidden h-screen w-80 shrink-0 flex-col overflow-hidden border-l border-(--border) bg-[rgba(255,255,255,0.06)] backdrop-blur-xl xl:flex">
       <div className="flex h-20 shrink-0 items-center border-b border-[#dbe2df]/80 px-8">
         <img src={aiInsightBulb} alt="" className="mr-3 h-7 w-7 object-contain opacity-80" />
         <h3 className="text-lg font-semibold">AI Insight</h3>
@@ -530,7 +546,7 @@ function AiFeed({ insights }) {
             const textState = isHarmful ? getVisualState('red') : state;
 
             return (
-              <article key={item.title} className={`dashboard-ai-insight-card space-y-3 rounded-2xl border bg-white p-5 shadow-[0_10px_30px_rgba(0,0,0,0.035)] ${state.card}`}>
+              <article key={item.title} className={`dashboard-ai-insight-card space-y-3 rounded-2xl border border-(--border) bg-(--surface) p-5 shadow-[0_10px_30px_rgba(0,0,0,0.14)] ${state.card}`}>
                 <div className="flex items-start">
                   <span className={`rounded px-2 py-0.5 text-[10px] font-bold uppercase ${state.badge}`}>{item.label}</span>
                 </div>
@@ -543,29 +559,30 @@ function AiFeed({ insights }) {
         </section>
 
         <section>
-          <h4 className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#7b8581]">Historical Alignment</h4>
-          <div className="rounded-2xl border border-[#dbe2df] bg-[#f5f3f2] p-4">
-            <div className="flex h-24 items-end gap-1 px-2">
+          <div className="rounded-[1.75rem] border border-(--border) bg-[rgba(15,23,42,0.9)] p-5 shadow-[0_16px_44px_rgba(0,0,0,0.18)]">
+            <div className="mb-4 flex items-center justify-between">
+              <div>
+                <h4 className="text-xs font-bold uppercase tracking-[0.22em] text-[#7b8581]">Historical Alignment</h4>
+                <p className="mt-1 text-sm text-(--muted)">Recent alignment of your intelligence signals over the week.</p>
+              </div>
+              <span className="rounded-full border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.05)] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-(--text)">Live</span>
+            </div>
+            <div className="grid h-28 grid-cols-6 gap-2 px-1">
               {insights.alignmentBars.map((height, index) => {
                 const state = getVisualState(alignmentColorState(height));
-
                 return (
-                  <div
-                    key={`${height}-${index}`}
-                    className="dashboard-alignment-bar flex-1 rounded-t"
-                    style={{
-                      height: `${height}%`,
-                      backgroundColor: state.stroke,
-                      '--bar-hover-color': state.softStroke,
-                      opacity: 0.72 + index * 0.04,
-                    }}
-                  />
+                  <div key={`${height}-${index}`} className="flex flex-col items-center justify-end gap-2">
+                    <div className="w-full rounded-full transition-all duration-300"
+                      style={{
+                        height: `${Math.max(22, height)}%`,
+                        background: `linear-gradient(180deg, ${state.softStroke} 0%, ${state.stroke} 100%)`,
+                        boxShadow: `0 10px 20px ${state.softStroke}`,
+                      }}
+                    />
+                    <span className="text-[10px] uppercase tracking-[0.16em] text-(--muted)">{index === 0 ? 'Mon' : index === 5 ? 'Today' : ''}</span>
+                  </div>
                 );
               })}
-            </div>
-            <div className="mt-3 flex justify-between text-[9px] font-bold uppercase tracking-[0.14em] text-[#7b8581]">
-              <span>Mon</span>
-              <span>Today</span>
             </div>
           </div>
         </section>

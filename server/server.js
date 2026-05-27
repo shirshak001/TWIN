@@ -21,6 +21,7 @@ app.use(helmet());
 
 // CORS middleware
 app.use(corsMiddleware);
+app.options('*', corsMiddleware);
 
 // Body parser middleware
 app.use(express.json({ limit: '10mb' }));

@@ -71,8 +71,8 @@ function Copilot() {
                 <Sparkles className="h-4 w-4 text-(--primary)" />
                 Twin Copilot is listening
               </span>
-              <h1 className="text-4xl font-semibold tracking-tight text-slate-900">Your AI twin is ready to guide the day.</h1>
-              <p className="max-w-2xl text-sm leading-7 text-slate-600 opacity-90">
+              <h1 className="text-4xl font-semibold tracking-tight text-(--text)">Your AI twin is ready to guide the day.</h1>
+              <p className="max-w-2xl text-sm leading-7 text-(--muted) opacity-90">
                 Follow predictive prompts, quick actions, and context-aware insights across productivity, health, and career focus. All recommendations are generated from your latest habits and goals.
               </p>
             </div>
@@ -95,7 +95,7 @@ function Copilot() {
 
         <section className="grid gap-6 xl:grid-cols-[1.4fr_0.9fr]">
           <div className="space-y-6">
-            <article className="rounded-4xl border border-slate-200 bg-white p-6 shadow-[0_15px_42px_rgba(15,23,42,0.08)] transition duration-300 hover:-translate-y-1">
+            <article className="rounded-4xl border border-(--border) bg-(--surface) p-6 shadow-[0_15px_42px_rgba(0,0,0,0.22)] transition duration-300 hover:-translate-y-1">
               <div className="mb-5 flex items-center justify-between">
                 <div>
               <p className="text-sm font-semibold uppercase tracking-[0.24em] text-(--muted)">Copilot Actions</p>

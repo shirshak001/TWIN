@@ -153,11 +153,11 @@ function MiniFact({ title, value }) {
 function ProgressMeter({ label, value, color }) {
   return (
     <div>
-      <div className="mb-2 flex items-center justify-between text-sm text-slate-600">
+      <div className="mb-2 flex items-center justify-between text-sm text-(--muted)">
         <span>{label}</span>
         <span>{value}%</span>
       </div>
-      <div className="h-2.5 overflow-hidden rounded-full bg-slate-200">
+      <div className="h-2.5 overflow-hidden rounded-full bg-[rgba(255,255,255,0.08)]">
         <div className="h-full rounded-full" style={{ width: `${value}%`, backgroundColor: colorStyles[color]?.text || '#2563eb' }} />
       </div>
     </div>

@@ -1,7 +1,10 @@
+import { Link, useLocation } from 'react-router-dom';
 import logoUrl from '../assets/digital-twin-logo.png';
 
 function DigitalTwinLogo({ className = '', imageClassName = '' }) {
-  return (
+  const location = useLocation();
+  const isLoginPage = location.pathname === '/login';
+  const logo = (
     <span className={`flex shrink-0 items-center justify-center overflow-hidden bg-white ${className}`}>
       <img
         src={logoUrl}
@@ -10,6 +13,8 @@ function DigitalTwinLogo({ className = '', imageClassName = '' }) {
       />
     </span>
   );
+
+  return isLoginPage ? logo : <Link to="/dashboard">{logo}</Link>;
 }
 
 export default DigitalTwinLogo;
