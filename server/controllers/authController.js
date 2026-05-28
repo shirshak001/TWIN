@@ -176,7 +176,21 @@ export const getProfile = async (req, res, next) => {
  */
 export const updateProfile = async (req, res, next) => {
   try {
-    const { firstName, lastName, bio, phone, language, timezone, notifications } = req.body;
+    const {
+      firstName,
+      lastName,
+      bio,
+      phone,
+      language,
+      timezone,
+      notifications,
+      gender,
+      age,
+      heightCm,
+      weightKg,
+      goalPreferences,
+      healthPreferences,
+    } = req.body;
 
     const user = await User.findById(req.user.userId);
 
@@ -192,6 +206,26 @@ export const updateProfile = async (req, res, next) => {
     if (lastName) user.lastName = lastName.trim();
     if (bio) user.bio = bio.trim();
     if (phone) user.phone = phone;
+
+    // Profile health fields
+    if (['female', 'male', ''].includes(gender)) {
+      user.gender = gender;
+    }
+    if (age !== undefined && age !== null) {
+      user.age = Number(age);
+    }
+    if (heightCm !== undefined && heightCm !== null) {
+      user.heightCm = Number(heightCm);
+    }
+    if (weightKg !== undefined && weightKg !== null) {
+      user.weightKg = Number(weightKg);
+    }
+    if (Array.isArray(goalPreferences)) {
+      user.goalPreferences = goalPreferences.filter(Boolean);
+    }
+    if (typeof healthPreferences === 'string') {
+      user.healthPreferences = healthPreferences.trim();
+    }
 
     // Update preferences
     if (language) user.preferences.language = language;

@@ -214,7 +214,7 @@ function Signup() {
           <div className="pointer-events-none absolute inset-0 bg-[#223946]/10" />
           <div className="relative z-20">
             <Link to="/" className="mb-4 flex w-fit items-center gap-3 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 shadow-xl shadow-black/20 backdrop-blur">
-              <DigitalTwinLogo className="h-8 w-8 rounded-full shadow-sm" />
+              <DigitalTwinLogo className="h-8 w-8 rounded-full shadow-sm" disableLink />
               <span className="text-xs font-semibold">DigitalTwin</span>
             </Link>
 
@@ -272,7 +272,7 @@ function Signup() {
             <div className="w-full">
             <div className="mb-4 flex items-center justify-between lg:hidden">
               <Link to="/" className="flex items-center gap-3 lg:hidden">
-                <DigitalTwinLogo className="h-10 w-10 rounded-full border border-[#d8e5ea] shadow-sm" />
+                <DigitalTwinLogo className="h-10 w-10 rounded-full border border-[#d8e5ea] shadow-sm" disableLink />
                 <span className="font-semibold">DigitalTwin</span>
               </Link>
             </div>

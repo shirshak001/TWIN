@@ -69,11 +69,11 @@ function Copilot() {
             <div className="space-y-3">
               <span className="inline-flex items-center gap-2 rounded-full border border-(--border) bg-[rgba(255,255,255,0.08)] px-3 py-1 text-sm font-semibold text-(--text) shadow-[0_20px_40px_rgba(0,0,0,0.1)]">
                 <Sparkles className="h-4 w-4 text-(--primary)" />
-                Twin Copilot is listening
+                AI Life Chatbot Assistant
               </span>
-              <h1 className="text-4xl font-semibold tracking-tight text-(--text)">Your AI twin is ready to guide the day.</h1>
+              <h1 className="text-4xl font-semibold tracking-tight text-(--text)">Your intelligent life coach is ready to support progress.</h1>
               <p className="max-w-2xl text-sm leading-7 text-(--muted) opacity-90">
-                Follow predictive prompts, quick actions, and context-aware insights across productivity, health, and career focus. All recommendations are generated from your latest habits and goals.
+                Build memory-aware routines, track your goals, and get adaptive coaching across health, finance, productivity, and emotional balance.
               </p>
             </div>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:w-105">

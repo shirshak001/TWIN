@@ -48,6 +48,35 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+    gender: {
+      type: String,
+      enum: ['female', 'male', ''],
+      default: '',
+    },
+    age: {
+      type: Number,
+      min: 0,
+      default: null,
+    },
+    heightCm: {
+      type: Number,
+      min: 0,
+      default: null,
+    },
+    weightKg: {
+      type: Number,
+      min: 0,
+      default: null,
+    },
+    goalPreferences: {
+      type: [String],
+      default: [],
+    },
+    healthPreferences: {
+      type: String,
+      trim: true,
+      default: '',
+    },
 
     // Subscription & Role
     role: {

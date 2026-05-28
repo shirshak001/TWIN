@@ -15,6 +15,7 @@ import Onboarding from './pages/Onboarding';
 import Settings from './pages/Settings';
 import Signup from './pages/Signup';
 import Simulation from './pages/Simulation';
+import DailyUpdates from './pages/DailyUpdates';
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
           <Route path="/goals" element={<Goals />} />
           <Route path="/intelligence" element={<Intelligence />} />
           <Route path="/notifications" element={<Notifications />} />
+          <Route path="/daily-updates" element={<DailyUpdates />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/copilot" element={<Copilot />} />
           <Route path="/simulation" element={<Simulation />} />

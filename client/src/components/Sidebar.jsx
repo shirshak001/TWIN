@@ -11,6 +11,7 @@ import {
   MessageCircle,
   Bell,
   Settings,
+  Clock3,
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
@@ -24,7 +25,8 @@ const navItems = [
   { label: 'Goals', href: '/goals', icon: Target },
   { label: 'Intelligence', href: '/intelligence', icon: Zap },
   { label: 'Simulation', href: '/simulation', icon: GitBranch },
-  { label: 'Twin Copilot', href: '/copilot', icon: MessageCircle },
+  { label: 'Daily Updates', href: '/daily-updates', icon: Clock3 },
+  { label: 'AI Life Chatbot', href: '/copilot', icon: MessageCircle },
   { label: 'Notifications', href: '/notifications', icon: Bell },
 ];
 

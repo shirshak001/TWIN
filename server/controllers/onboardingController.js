@@ -108,6 +108,129 @@ export const completeDailyGoals = async (req, res, next) => {
   }
 };
 
+export const saveDailyUpdate = async (req, res, next) => {
+  try {
+    const update = req.body.dailyUpdate || {};
+    const profile = await OnboardingProfile.findOne({ userId: req.user.userId }).sort({ updatedAt: -1 });
+
+    if (!profile) {
+      return res.status(404).json({
+        success: false,
+        message: 'Onboarding profile not found',
+        code: 'ONBOARDING_REQUIRED',
+      });
+    }
+
+    profile.dailyUpdates = profile.dailyUpdates || [];
+    profile.dailyUpdates.push({
+      date: new Date().toISOString(),
+      mood: sanitizeString(update.mood, 'neutral'),
+      energy: sanitizeNumber(update.energy, 6),
+      stress: sanitizeNumber(update.stress, 5),
+      productivity: sanitizeNumber(update.productivity, 6),
+      symptoms: sanitizeString(update.symptoms, ''),
+      waterIntake: sanitizeNumber(update.waterIntake, 2),
+      sleepQuality: sanitizeNumber(update.sleepQuality, 6),
+      focusLevel: sanitizeNumber(update.focusLevel, 6),
+      spendingHabits: sanitizeString(update.spendingHabits, 'balanced'),
+      workoutCompletion: sanitizeString(update.workoutCompletion, 'partial'),
+    });
+
+    await profile.save();
+
+    return res.status(201).json({
+      success: true,
+      message: 'Daily update saved successfully',
+      data: buildDashboardResponse(profile),
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const addGoal = async (req, res, next) => {
+  try {
+    const goal = req.body;
+    if (!goal?.title || !goal?.category || !goal?.desiredOutcome) {
+      return res.status(400).json({
+        success: false,
+        message: 'Goal title, category, and desired outcome are required',
+      });
+    }
+
+    const profile = await OnboardingProfile.findOne({ userId: req.user.userId }).sort({ updatedAt: -1 });
+    if (!profile) {
+      return res.status(404).json({
+        success: false,
+        message: 'Onboarding profile not found',
+        code: 'ONBOARDING_REQUIRED',
+      });
+    }
+
+    profile.goals = profile.goals || [];
+    profile.goals.push({
+      id: Number(goal.id) || Date.now(),
+      category: sanitizeString(goal.category),
+      title: sanitizeString(goal.title),
+      targetDate: sanitizeString(goal.targetDate, ''),
+      status: sanitizeString(goal.status || 'Active'),
+      desiredOutcome: sanitizeString(goal.desiredOutcome),
+      progress: sanitizeNumber(goal.progress, 0),
+      roadmap: Array.isArray(goal.roadmap) ? goal.roadmap : [],
+      milestones: Array.isArray(goal.milestones) ? goal.milestones : [],
+      weeklyPlan: Array.isArray(goal.weeklyPlan) ? goal.weeklyPlan : [],
+      probability: sanitizeNumber(goal.probability, 0),
+      color: sanitizeString(goal.color, 'blue'),
+      createdAt: new Date(),
+    });
+
+    await profile.save();
+
+    return res.status(201).json({
+      success: true,
+      message: 'Goal added successfully',
+      data: buildDashboardResponse(profile),
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateOnboardingProfile = async (req, res, next) => {
+  try {
+    const profile = await OnboardingProfile.findOne({ userId: req.user.userId }).sort({ updatedAt: -1 });
+    if (!profile) {
+      return res.status(404).json({
+        success: false,
+        message: 'Onboarding profile not found',
+        code: 'ONBOARDING_REQUIRED',
+      });
+    }
+
+    const updates = {
+      gender: sanitizeGender(req.body.gender ?? profile.gender),
+      age: sanitizeNumber(req.body.age, profile.age),
+      heightCm: sanitizeNumber(req.body.heightCm, profile.heightCm),
+      weightKg: sanitizeNumber(req.body.weightKg, profile.weightKg),
+      goalPreferences: Array.isArray(req.body.goalPreferences)
+        ? req.body.goalPreferences.map((item) => sanitizeString(item))
+        : sanitizeStringArray(req.body.goalPreferences),
+      healthPreferences: sanitizeString(req.body.healthPreferences, profile.healthPreferences),
+    };
+
+    Object.assign(profile, updates);
+    await profile.save();
+
+    return res.status(200).json({
+      success: true,
+      message: 'Onboarding profile updated successfully',
+      data: buildDashboardResponse(profile),
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 function normalizeOnboardingPayload(body = {}) {
   const integrations = body.integrations || {};
   const lifestyle = body.lifestyle || {};
@@ -133,6 +256,16 @@ function normalizeOnboardingPayload(body = {}) {
       body.genderSpecificHealthContext ?? lifestyle.genderSpecificHealthContext,
       'not_now'
     ),
+    pregnancyStatus: {
+      status: sanitizeString(body.pregnancyStatus?.status ?? lifestyle.pregnancyStatus?.status, 'none'),
+      trimester: sanitizeNumber(body.pregnancyStatus?.trimester ?? lifestyle.pregnancyStatus?.trimester, null),
+      dueDate: sanitizeString(body.pregnancyStatus?.dueDate ?? lifestyle.pregnancyStatus?.dueDate, ''),
+    },
+    age: sanitizeNumber(body.age ?? lifestyle.age, null),
+    heightCm: sanitizeNumber(body.heightCm ?? lifestyle.heightCm, null),
+    weightKg: sanitizeNumber(body.weightKg ?? lifestyle.weightKg, null),
+    goalPreferences: sanitizeStringArray(body.goalPreferences ?? lifestyle.goalPreferences),
+    healthPreferences: sanitizeString(body.healthPreferences ?? lifestyle.healthPreferences, ''),
     monthlyIncome: sanitizeNumber(body.monthlyIncome ?? financialPatterns.monthlyIncome, 0),
     monthlyExpenditure: sanitizeNumber(body.monthlyExpenditure ?? financialPatterns.monthlyExpenditure, 0),
     savingsHabit: sanitizeString(body.savingsHabit ?? financialPatterns.savingsHabits, 'moderate'),

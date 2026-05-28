@@ -255,44 +255,27 @@ function buildTrendPath(values, width, height) {
 }
 
 function Health() {
-  const [gender, setGender] = useState('female'); // 'male' or 'female'
-  const [femaleMode, setFemaleMode] = useState('period'); // 'period' or 'pregnancy'
+  const storedProfile = getStoredProfile();
+  const gender = storedProfile.gender || 'female';
+  const healthMode = deriveFemaleHealthMode(storedProfile);
   const [selectedMetric, setSelectedMetric] = useState(null);
   const [activeTab, setActiveTab] = useState('metrics'); // 'metrics', 'trends', 'ai'
 
   // Select appropriate metrics based on gender and mode
-  const currentMetrics = 
-    gender === 'male' ? maleMetrics : 
-    femaleMode === 'period' ? femalePeriodicMetrics : 
-    femalePregnancyMetrics;
+  const currentMetrics =
+    gender === 'male'
+      ? maleMetrics
+      : healthMode === 'pregnancy'
+      ? femalePregnancyMetrics
+      : femalePeriodicMetrics;
 
   // AI Suggestions
   const aiSuggestions = [
     { icon: Brain, title: 'Hydration Alert', text: 'Increase water intake by 600ml daily. Current level suboptimal for recovery.', color: 'cyan' },
     { icon: Activity, title: 'Exercise Recommendation', text: gender === 'male' ? 'Strength training 3x weekly optimal for testosterone maintenance.' : 'Low-impact yoga improves flexibility without stress.', color: 'emerald' },
     { icon: Moon, title: 'Sleep Optimization', text: 'Maintain 10 PM bedtime. Your REM cycles peak at 2-4 AM window.', color: 'indigo' },
-    { icon: Zap, title: 'Energy Management', text: gender === 'male' ? 'Peak workout window: 2-4 PM (natural cortisol peak)' : femaleMode === 'period' ? 'Conserve energy today (peak menstrual phase)' : 'Ideal time for prenatal exercises: 10-11 AM', color: 'amber' },
+    { icon: Zap, title: 'Energy Management', text: gender === 'male' ? 'Peak workout window: 2-4 PM (natural cortisol peak)' : healthMode === 'period' ? 'Conserve energy today (peak menstrual phase)' : 'Ideal time for prenatal exercises: 10-11 AM', color: 'amber' },
   ];
-
-  // Metric Card Component
-  const MetricCard = ({ metric }) => (
-    <button
-      onClick={() => setSelectedMetric(metric)}
-      className="rounded-xl border-2 p-4 shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer text-left h-full flex flex-col justify-between group border-(--border) bg-(--surface-soft)"
-    >
-      <div>
-        <p className="text-xs font-bold uppercase tracking-wider text-(--muted) mb-2">{metric.label}</p>
-        <div className="flex items-baseline gap-1">
-          <span className="text-2xl font-bold text-(--text)">{metric.value}</span>
-          <span className="text-xs text-(--muted)">{metric.unit}</span>
-        </div>
-        <p className="text-xs text-(--muted) mt-1">{metric.status}</p>
-      </div>
-      <div className="mt-3 group-hover:opacity-100 transition-opacity">
-        <SimpleChart data={metric.data} color={metric.color} />
-      </div>
-    </button>
-  );
 
   // AI Card Component
   const AICard = ({ suggestion }) => (
@@ -316,56 +299,15 @@ function Health() {
           <p className="text-sm text-(--muted) mt-1">Real-time biometric analysis & AI recommendations</p>
         </div>
 
-        {/* Gender Selector */}
-        <div className="flex items-center gap-2 bg-[rgba(255,255,255,0.06)] backdrop-blur border border-(--border) rounded-full p-1">
-          <button
-            onClick={() => setGender('male')}
-            className={`px-4 py-2 rounded-full font-semibold text-sm transition-all duration-300 ${
-              gender === 'male'
-                ? 'bg-(--secondary) text-[#0b1020] shadow-lg shadow-[rgba(124,255,178,0.18)]'
-                : 'text-(--muted) hover:text-(--text)'
-            }`}
-          >
-            Male
-          </button>
-          <button
-            onClick={() => setGender('female')}
-            className={`px-4 py-2 rounded-full font-semibold text-sm transition-all duration-300 ${
-              gender === 'female'
-                ? 'bg-(--accent) text-[#0b1020] shadow-lg shadow-[rgba(192,132,252,0.18)]'
-                : 'text-(--muted) hover:text-(--text)'
-            }`}
-          >
-            Female
-          </button>
+        <div className="rounded-3xl border border-(--border) bg-[rgba(255,255,255,0.06)] p-4 text-sm text-(--text)">
+          <p className="font-semibold">Active health state</p>
+          <p className="mt-2 text-sm text-(--muted)">
+            {gender === 'male' && 'Male health dashboard loaded from your profile.'}
+            {gender === 'female' && healthMode === 'period' && 'Female menstrual health dashboard loaded from your profile.'}
+            {gender === 'female' && healthMode === 'pregnancy' && 'Female pregnancy dashboard loaded from your profile.'}
+          </p>
         </div>
       </div>
-
-      {/* Female Mode Selector - Only shown when Female selected */}
-      {gender === 'female' && (
-        <div className="mb-6 flex gap-2">
-          <button
-            onClick={() => setFemaleMode('period')}
-            className={`px-4 py-2 rounded-full font-semibold text-sm transition-all duration-300 ${
-              femaleMode === 'period'
-                ? 'bg-[rgba(236,72,153,0.18)] text-(--text) shadow-lg shadow-[rgba(236,72,153,0.18)]'
-                : 'bg-[rgba(255,255,255,0.06)] text-(--muted) border border-(--border) hover:bg-[rgba(255,255,255,0.1)]'
-            }`}
-          >
-            Period Mode
-          </button>
-          <button
-            onClick={() => setFemaleMode('pregnancy')}
-            className={`px-4 py-2 rounded-full font-semibold text-sm transition-all duration-300 ${
-              femaleMode === 'pregnancy'
-                ? 'bg-[rgba(56,189,248,0.18)] text-(--text) shadow-lg shadow-[rgba(56,189,248,0.18)]'
-                : 'bg-[rgba(255,255,255,0.06)] text-(--muted) border border-(--border) hover:bg-[rgba(255,255,255,0.1)]'
-            }`}
-          >
-            Pregnancy Mode
-          </button>
-        </div>
-      )}
 
       {/* Health Summary Quick View */}
       <div className="mb-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
@@ -612,6 +554,48 @@ function Health() {
 }
 
 // Helper function to get Tailwind color values
+function deriveFemaleHealthMode(profile) {
+  if (!profile || profile.gender !== 'female') {
+    return 'period';
+  }
+
+  const pregnancy = profile.pregnancyStatus?.status || profile.pregnancyStatus?.currentStatus;
+  if (pregnancy === 'pregnant' || pregnancy === 'pregnancy') {
+    return 'pregnancy';
+  }
+
+  const periodState = profile.periodTracking || profile.genderSpecificHealthContext || 'not_now';
+  if (['ongoing', 'menstrual', 'period', 'active'].includes(periodState)) {
+    return 'period';
+  }
+
+  return 'period';
+}
+
+function getStoredProfile() {
+  try {
+    const stored = localStorage.getItem('digitalTwinDashboardData');
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      if (parsed?.profile) {
+        return parsed.profile;
+      }
+    }
+
+    const raw = localStorage.getItem('lifetwinOnboardingProfile');
+    if (raw) {
+      return JSON.parse(raw);
+    }
+  } catch (error) {
+    console.warn('Unable to load stored profile:', error);
+  }
+  return {
+    gender: 'female',
+    periodTracking: 'not_now',
+    pregnancyStatus: {},
+  };
+}
+
 function getColorValue(colorName, shade) {
   const colors = {
     red: { 50: '#fef2f2', 100: '#fee2e2', 300: '#f87171', 600: '#dc2626' },
