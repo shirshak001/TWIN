@@ -16,6 +16,7 @@ import Settings from './pages/Settings';
 import Signup from './pages/Signup';
 import Simulation from './pages/Simulation';
 import DailyUpdates from './pages/DailyUpdates';
+import Uploads from './pages/Uploads';
 
 function App() {
   return (
@@ -50,6 +51,7 @@ function App() {
           <Route path="/settings" element={<Settings />} />
           <Route path="/copilot" element={<Copilot />} />
           <Route path="/simulation" element={<Simulation />} />
+          <Route path="/uploads" element={<Uploads />} />
         </Route>
       </Routes>
     </BrowserRouter>

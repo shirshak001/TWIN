@@ -3,7 +3,7 @@ import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import { Target, CalendarCheck, Sparkles, Shield, ListChecks, ArrowRight, BookOpen, Heart, Wallet, Bolt } from 'lucide-react';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001';
 
 const categoryOptions = [
   { value: 'finance', label: 'Finance Goal', icon: Wallet, tone: 'indigo' },

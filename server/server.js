@@ -8,6 +8,7 @@ import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 import authRoutes from './routes/auth.js';
 import integrationRoutes from './routes/integrations.js';
 import onboardingRoutes from './routes/onboarding.js';
+import uploadRoutes from './routes/upload.js';
 
 // Initialize Express app
 const app = express();
@@ -61,6 +62,12 @@ app.use('/api/auth', authRoutes);
 app.use('/api', onboardingRoutes);
 app.use('/api/integrations', integrationRoutes);
 
+/**
+ * Upload Routes
+ * Base path: /api/upload
+ */
+app.use('/api/upload', uploadRoutes);
+
 // ============================================
 // ERROR HANDLING MIDDLEWARE
 // ============================================
@@ -95,6 +102,11 @@ const server = app.listen(PORT, () => {
     - Get Profile: GET /api/auth/profile (Protected)
     - Update Profile: PUT /api/auth/profile (Protected)
     - Change Password: POST /api/auth/change-password (Protected)
+    - Upload File: POST /api/upload/:category (Protected)
+    - Upload History: GET /api/upload/history (Protected)
+    - Upload Stats: GET /api/upload/stats (Protected)
+    - Get Upload: GET /api/upload/:uploadId (Protected)
+    - Delete Upload: DELETE /api/upload/:uploadId (Protected)
 
 ═══════════════════════════════════════════
 `);

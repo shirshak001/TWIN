@@ -3,7 +3,7 @@ import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import { ArrowRight, Droplets, HeartPulse, Activity, Sparkles, Clock3, Zap } from 'lucide-react';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001';
 
 const initialFormState = {
   mood: 'neutral',

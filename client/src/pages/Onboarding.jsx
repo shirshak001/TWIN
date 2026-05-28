@@ -6,7 +6,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import BackgroundBeams from '../components/BackgroundBeams';
 import DigitalTwinLogo from '../components/DigitalTwinLogo';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001';
 
 const behaviorSignals = [
   { id: 'health', title: 'Health rhythm', description: 'Sleep, recovery, energy, and daily consistency.' },

@@ -14,6 +14,7 @@ import {
   Clock3,
   ChevronLeft,
   ChevronRight,
+  Upload,
 } from 'lucide-react';
 import DigitalTwinLogo from './DigitalTwinLogo';
 
@@ -22,6 +23,7 @@ const navItems = [
   { label: 'Health', href: '/health', icon: Heart },
   { label: 'Finance', href: '/finance', icon: Wallet },
   { label: 'Career', href: '/career', icon: Briefcase },
+  { label: 'Uploads', href: '/uploads', icon: Upload },
   { label: 'Goals', href: '/goals', icon: Target },
   { label: 'Intelligence', href: '/intelligence', icon: Zap },
   { label: 'Simulation', href: '/simulation', icon: GitBranch },
@@ -44,7 +46,7 @@ function Sidebar() {
       <div className="flex h-full flex-col">
       <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'justify-between gap-3'}`}>
         <NavLink to="/dashboard" className="flex min-w-0 items-center gap-3">
-          <DigitalTwinLogo className="h-11 w-11 rounded-lg border border-(--border) shadow-lg shadow-[0_18px_55px_rgba(0,0,0,0.18)]" />
+          <DigitalTwinLogo className="h-11 w-11 rounded-lg border border-(--border) shadow-lg shadow-[0_18px_55px_rgba(0,0,0,0.18)]" disableLink={true} />
           {!isCollapsed && (
             <div className="min-w-0">
               <p className="truncate text-sm font-semibold text-(--text)">DigitalTwin</p>
